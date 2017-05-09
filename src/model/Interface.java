@@ -18,6 +18,7 @@ public class Interface implements Serializable {
     private boolean Consumer;
     private InterfaceTypes type;
     private String Name;
+    private String info;
     
     
             
@@ -33,23 +34,15 @@ public class Interface implements Serializable {
     }
     
     public void SetPriority(priorityAndQulaityLevels Priority){
-        this.Priority=Priority;
+        this.Priority = Priority;
     }
 
-  
-
-    /**
-     * @param Priority the Priority to set
-     */
-   
-
-    
 
     /**
      * @param Quality the Quality to set
      */
     public void setQuality(priorityAndQulaityLevels Quality) {
-        this.setQuality(Quality);
+        this.Quality = Quality;
     }
 
     /**
@@ -123,6 +116,20 @@ public class Interface implements Serializable {
      */
     public void setType(InterfaceTypes type) {
         this.type = type;
+    }
+
+    /**
+     * @return the info
+     */
+    public String getInfo() {
+        return info;
+    }
+
+    /**
+     * @param info the info to set
+     */
+    public void setInfo(String info) {
+        this.info = info;
     }
 
     

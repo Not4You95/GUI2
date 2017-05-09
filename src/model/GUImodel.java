@@ -141,11 +141,7 @@ public class GUImodel {
     
     public TSN getNode(String name){
         if (taskTemp != null) {
-            for (int i = 0; i < taskTemp.getNoder().size(); i++) {
-               /* System.out.println("---------------------------------------------------------");
-                System.out.println(taskTemp.getNoder().get(i).getName());
-                System.out.println(name);
-                System.out.println(name.toLowerCase().contains(taskTemp.getNoder().get(i).getName().toLowerCase()));*/
+            for (int i = 0; i < taskTemp.getNoder().size(); i++) {               
             if (name.toLowerCase().contains(taskTemp.getNoder().get(i).getName().toLowerCase())) {
                 return taskTemp.getNoder().get(i);
             }
@@ -154,7 +150,22 @@ public class GUImodel {
         return null;
     }
     
-    public ArrayList<Interface> getInterfaces(){
+    public Interface getInterface(String name){
+        if(taskTemp != null){            
+             ArrayList<Interface> Itemp = new ArrayList<>();
+             Itemp.addAll(getInterfacesTypes());
+            
+             for (int i = 0; i < Itemp.size(); i++) {
+                 
+                 if (name.toLowerCase().contains(Itemp.get(i).getName().toLowerCase())) {
+                     return Itemp.get(i);
+                 }
+            }
+        }
+        return null;
+}
+    
+    public ArrayList<Interface> getInterfacesTypes(){
          ArrayList<Interface> temp = new ArrayList<>();
         ArrayList<Interface> Itemp = new ArrayList<>();
         Itemp.addAll(taskTemp.getInterfaces());
@@ -182,6 +193,25 @@ public class GUImodel {
         }
         return temp;
     }
+    
+    public void newInterface(Interface temp){
+        for (int i = 0; i < Tasks.size(); i++) {
+            if (Tasks.get(i).getName().toLowerCase().contains(taskTemp.getName().toLowerCase())) {
+                 for (int j = 0; j < taskTemp.getInterfaces().size(); j++) {
+                   taskTemp.getNoder().get(j).newInterface(temp);
+                   Tasks.get(i).getNoder().get(j).newInterface(temp);
+                        }
+            }
+        }
+        
+        settempTask(taskTemp);
+    }
+    
+    
+    
+    
+    
+    
       public void test() {
           ArrayList<TSN> temp = new ArrayList<TSN>();
         ArrayList<Orginasation> orgList = new ArrayList<Orginasation>();

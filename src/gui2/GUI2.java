@@ -61,7 +61,6 @@ import model.InterfaceTypes;
 import model.TSNTypes;
 import model.Task;
 import model.guiControler;
-import model.priorityAndQulaityLevels;
 import model.*;
 /**
  *
@@ -626,8 +625,13 @@ public class GUI2 extends Application {
   }
 
   public void P_2_PScreen(ArrayList<String> Nodes,ArrayList<String> inters){
-      String retunNode1="",beforeNode1,retunNode2="" ,beforeNode2,returnComType="",beforeCom;
-      ObservableList<String> levels = FXCollections.observableArrayList("High","Medium","Low");
+     
+      
+      ObservableList<String> levels = FXCollections.observableArrayList();
+      for (int i = 1; i < priorityAndQulaityLevels.values().length+1; i++) {
+          levels.add(priorityAndQulaityLevels.getTypes(i).toString());
+      }
+      
       tabP_2_P = new Tab("P_2_P");
       tabPane.getTabs().remove(tabP_2_P);
       GridPane pnet = new GridPane();
@@ -704,25 +708,58 @@ public class GUI2 extends Application {
   }  
   
   
-  public void nodeAndComtypeTab(TSN temp){
-      Tab tab = new Tab(temp.getName());
-      ObservableList<String> levels = FXCollections.observableArrayList("High","Medium","Low");
+  public void nodeAndComtypeTab(TSN temp,Interface itemp){
+      
+      String name = null,info = null;
+      if (temp != null) {
+          name = temp.getName();
+          info = temp.getInfo();
+      }
+      else if(itemp != null){
+          name = itemp.getName();
+          info = itemp.getInfo();
+      }
+     final Tab tab = new Tab(name);
+      ObservableList<String> levels = FXCollections.observableArrayList();
+      for (int i = 1; i < priorityAndQulaityLevels.values().length+1; i++) {
+          levels.add(priorityAndQulaityLevels.getTypes(i).toString());
+      }
       GridPane netPane = new GridPane();
       Label PriLabel = new Label("Priority: ");
       Label QuaLabel = new Label("Quality: ");
       Label infoLabel = new Label("Information");
-      ComboBox<String> PriBox = new ComboBox<>(levels);
-      PriBox.setValue(temp.getPriority());
+     final  ComboBox<String> PriBox = new ComboBox<>(levels);
+      
       
       PriBox.setPromptText("Priority");
-      ComboBox<String> QulBox = new ComboBox<>(levels);
-      QulBox.setValue(temp.getQuality());
+    final  ComboBox<String> QulBox = new ComboBox<>(levels);      
       QulBox.setPromptText("Quality");
-      TextArea text = new TextArea(temp.getQuality());
+      TextArea text = new TextArea(info);
        text.setMaxWidth(150);
        text.setMaxHeight(110);
        text.setPrefColumnCount(10);
        text.setWrapText(true);
+       Button okButton = new Button("Ok");
+       okButton.setOnAction(new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+              if (PriBox.getValue() != null && QulBox.getValue() != null ) {
+                  if (temp != null) {
+                      temp.setPriority(PriBox.getValue());
+                      temp.setQuality(QulBox.getValue());
+                      
+                  }
+                  else if (itemp != null) {
+                      System.out.println("Level: "+PriBox.getVisibleRowCount());
+                      itemp.SetPriority(priorityAndQulaityLevels.getTypes(PriBox.getVisibleRowCount()));
+                      itemp.setQuality(priorityAndQulaityLevels.getTypes(QulBox.getVisibleRowCount()));
+                  }
+                  tabPane.getTabs().remove(tab);
+              }
+          }
+      });
+       
+       
       //ImageView Image = new ImageView();
       //Image image1 = new Image(Main.class.getResourceAsStream(""));
       
@@ -742,6 +779,8 @@ public class GUI2 extends Application {
       netPane.add(QuaLabel, 3, 1);
       netPane.add(QulBox, 3, 2);
       
+      //ok button
+       netPane.add(okButton, 7, 4);
       tab.setContent(netPane);
               
       tabPane.getTabs().add(tab);

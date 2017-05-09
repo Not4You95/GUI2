@@ -142,6 +142,15 @@ public TSN(){
     public void setQuality(String quality) {
         this.quality.set(quality);
     }
+    
+    public void newInterface(Interface temp){
+        for (int i = 0; i < ListOfInterface.size(); i++) {
+            if (ListOfInterface.get(i).getName().toLowerCase().contains(temp.getName().toLowerCase())) {
+                ListOfInterface.remove(i);
+            }
+        }
+        ListOfInterface.add(temp);
+    }
 
    
 }
