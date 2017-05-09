@@ -47,8 +47,7 @@ public class GUImodel {
      dayOfMission = date;
         //System.out.println("Datum: "+dayOfMission.getDayOfMonth());
         
-    }
-    
+    }    
     
     public ArrayList<String> GetTaskNames(){
         ArrayList<String> temp = new ArrayList<String>();
@@ -177,8 +176,7 @@ public class GUImodel {
             
         }
         return temp;
-    }
-          
+    }          
 
     public ArrayList<String> getInterfacesOfTypeStrings(){
         ArrayList<String> temp = new ArrayList<>();
@@ -197,9 +195,9 @@ public class GUImodel {
     public void newInterface(Interface temp){
         for (int i = 0; i < Tasks.size(); i++) {
             if (Tasks.get(i).getName().toLowerCase().contains(taskTemp.getName().toLowerCase())) {
-                 for (int j = 0; j < taskTemp.getInterfaces().size(); j++) {
-                   taskTemp.getNoder().get(j).newInterface(temp);
-                   Tasks.get(i).getNoder().get(j).newInterface(temp);
+                 for (int j = 0; j < taskTemp.getNoder().size(); j++) {
+                  // taskTemp.getNoder().get(j).newInterface(temp);
+                    Tasks.get(i).getNoder().get(j).newUpdatedInterface(temp);
                         }
             }
         }
@@ -207,7 +205,14 @@ public class GUImodel {
         settempTask(taskTemp);
     }
     
-    
+    public void newNode(TSN temp){
+        for (int i = 0; i < Tasks.size(); i++) {
+            if (Tasks.get(i).getName().toLowerCase().contains(taskTemp.getName().toLowerCase())) {               
+                    Tasks.get(i).newUpdatedNode(temp);               
+            }
+        }
+        settempTask(taskTemp);
+    }
     
     
     
@@ -229,11 +234,11 @@ Video – Streamed Video
 Msg – Command and control messages
 Control – System Management*/
        
-       Interface in1 = new Interface("BFT", priorityAndQulaityLevels.High, priorityAndQulaityLevels.High,InterfaceTypes.Tracking);
-       Interface in2 = new Interface("Voice", priorityAndQulaityLevels.Low, priorityAndQulaityLevels.Low, InterfaceTypes.Voice);
-       Interface in3 = new Interface("ISR", priorityAndQulaityLevels.Medium, priorityAndQulaityLevels.Medium, InterfaceTypes.Mesagge);
-       Interface in4  =new Interface("Video", priorityAndQulaityLevels.Medium, priorityAndQulaityLevels.Low, InterfaceTypes.Video);
-       Interface in5 = new Interface("Contol", priorityAndQulaityLevels.High, priorityAndQulaityLevels.High, InterfaceTypes.Mesagge);
+       Interface in1 = new Interface("BFT",InterfaceTypes.Tracking);
+       Interface in2 = new Interface("Voice", InterfaceTypes.Voice);
+       Interface in3 = new Interface("ISR", InterfaceTypes.Mesagge);
+       Interface in4  =new Interface("Video",  InterfaceTypes.Video);
+       Interface in5 = new Interface("Contol", InterfaceTypes.Mesagge);
        
        ArrayList<Interface> listInter = new ArrayList<>();
        listInter.add(in1);

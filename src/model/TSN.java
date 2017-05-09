@@ -19,8 +19,8 @@ private SimpleStringProperty name = new SimpleStringProperty();
 private TSNTypes type;
 private SimpleStringProperty info = new SimpleStringProperty();
 private ArrayList<Interface> ListOfInterface;
-private SimpleStringProperty Priority = new SimpleStringProperty();
-private SimpleStringProperty quality = new SimpleStringProperty();
+private priorityAndQulaityLevels Priority;
+private priorityAndQulaityLevels quality ;
 
 /**
  * Constructur
@@ -28,7 +28,9 @@ private SimpleStringProperty quality = new SimpleStringProperty();
  */
 public TSN(String name)
 {
-       setName(name);
+       setName(name);       
+       this.Priority = priorityAndQulaityLevels.Standard;
+       this.quality = priorityAndQulaityLevels.Standard;
        ListOfInterface = new ArrayList<Interface>();
     
 }
@@ -115,41 +117,46 @@ public TSN(){
         return info.get();
     }
 
-    /**
-     * @return the Priority
-     */
-    public String getPriority() {
-        return Priority.get();
-    }
-
-    /**
-     * @param Priority the Priority to set
-     */
-    public void setPriority(String Priority) {
-        this.Priority.set(Priority);
-    }
-
-    /**
-     * @return the quality
-     */
-    public String getQuality() {
-        return quality.get();
-    }
-
-    /**
-     * @param quality the quality to set
-     */
-    public void setQuality(String quality) {
-        this.quality.set(quality);
-    }
     
-    public void newInterface(Interface temp){
+    
+    public void newUpdatedInterface(Interface temp){
+        int nr = ListOfInterface.size();
         for (int i = 0; i < ListOfInterface.size(); i++) {
             if (ListOfInterface.get(i).getName().toLowerCase().contains(temp.getName().toLowerCase())) {
                 ListOfInterface.remove(i);
             }
         }
-        ListOfInterface.add(temp);
+        if (nr > ListOfInterface.size()) {
+            ListOfInterface.add(temp);
+        }
+    }
+
+    /**
+     * @param Priority the Priority to set
+     */
+    public void setPriority(priorityAndQulaityLevels Priority) {
+        this.Priority = Priority;
+    }
+
+    /**
+     * @param quality the quality to set
+     */
+    public void setQuality(priorityAndQulaityLevels quality) {
+        this.quality = quality;
+    }
+
+    /**
+     * @return the Priority
+     */
+    public priorityAndQulaityLevels getPriority() {
+        return Priority;
+    }
+
+    /**
+     * @return the quality
+     */
+    public priorityAndQulaityLevels getQuality() {
+        return quality;
     }
 
    

@@ -710,17 +710,26 @@ public class GUI2 extends Application {
   
   public void nodeAndComtypeTab(TSN temp,Interface itemp){
       
-      String name = null,info = null;
+      String name = null,info = null,priority = null,quality = null;
       if (temp != null) {
           name = temp.getName();
           info = temp.getInfo();
+          priority = temp.getPriority().toString();
+          quality = temp.getQuality().toString();
       }
       else if(itemp != null){
           name = itemp.getName();
-          info = itemp.getInfo();
+          info = itemp.getInfo();         
+          priority = itemp.getPriority().toString();
+          quality = itemp.getQuality().toString();
       }
+      
+      System.out.println("Priority: "+priority);
+      System.out.println("Quality: "+quality);
      final Tab tab = new Tab(name);
       ObservableList<String> levels = FXCollections.observableArrayList();
+      
+      
       for (int i = 1; i < priorityAndQulaityLevels.values().length+1; i++) {
           levels.add(priorityAndQulaityLevels.getTypes(i).toString());
       }
@@ -731,9 +740,11 @@ public class GUI2 extends Application {
      final  ComboBox<String> PriBox = new ComboBox<>(levels);
       
       
-      PriBox.setPromptText("Priority");
+    //  PriBox.setPromptText("Priority");
+     PriBox.setValue(priority);
     final  ComboBox<String> QulBox = new ComboBox<>(levels);      
-      QulBox.setPromptText("Quality");
+    //  QulBox.setPromptText("Quality");
+     QulBox.setValue(quality);
       TextArea text = new TextArea(info);
        text.setMaxWidth(150);
        text.setMaxHeight(110);
@@ -745,14 +756,15 @@ public class GUI2 extends Application {
           public void handle(ActionEvent event) {
               if (PriBox.getValue() != null && QulBox.getValue() != null ) {
                   if (temp != null) {
-                      temp.setPriority(PriBox.getValue());
-                      temp.setQuality(QulBox.getValue());
+                      temp.setPriority(priorityAndQulaityLevels.getTypes(PriBox.getSelectionModel().getSelectedIndex()+1));
+                      temp.setQuality(priorityAndQulaityLevels.getTypes(QulBox.getSelectionModel().getSelectedIndex()+1));
+                      Contolloer.newNode(temp);
                       
                   }
-                  else if (itemp != null) {
-                      System.out.println("Level: "+PriBox.getVisibleRowCount());
-                      itemp.SetPriority(priorityAndQulaityLevels.getTypes(PriBox.getVisibleRowCount()));
-                      itemp.setQuality(priorityAndQulaityLevels.getTypes(QulBox.getVisibleRowCount()));
+                  else if (itemp != null) {                     
+                      itemp.SetPriority(priorityAndQulaityLevels.getTypes(PriBox.getSelectionModel().getSelectedIndex()+1));
+                      itemp.setQuality(priorityAndQulaityLevels.getTypes(QulBox.getSelectionModel().getSelectedIndex()+1));
+                      Contolloer.newInterface(itemp);
                   }
                   tabPane.getTabs().remove(tab);
               }

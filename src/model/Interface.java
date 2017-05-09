@@ -26,10 +26,10 @@ public class Interface implements Serializable {
     
     
 }
-    public Interface(String name,priorityAndQulaityLevels priority,priorityAndQulaityLevels quality,InterfaceTypes type){
+    public Interface(String name,InterfaceTypes type){
         this.Name = name;
-        this.Priority = priority;
-        this.Quality = quality;
+        this.Priority = priorityAndQulaityLevels.Standard;
+        this.Quality = priorityAndQulaityLevels.Standard;
         this.type = type;
     }
     
@@ -96,6 +96,8 @@ public class Interface implements Serializable {
     public priorityAndQulaityLevels getPriority() {
         return Priority;
     }
+    
+   
 
     /**
      * @return the Quality

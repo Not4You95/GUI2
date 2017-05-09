@@ -178,6 +178,10 @@ public class guiControler {
      }
      
      public void newInterface(Interface temp){
+         model.newInterface(temp);
+     }
+     
+     public void newNode(TSN temp){
          
      }
     

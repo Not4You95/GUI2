@@ -10,7 +10,7 @@ package model;
  * @author jonas
  */
 public enum priorityAndQulaityLevels {
-    High(1),Medium(2),Low(3);
+    High(1),Medium(2),Low(3),Standard(4);
     int Value= 0;
     
     priorityAndQulaityLevels(int ord) {

@@ -162,6 +162,19 @@ public class Task implements Serializable{
     public void setEndTime(Calendar EndTime) {
         this.EndTime = EndTime;
     }
+    
+    public void newUpdatedNode(TSN temp){
+        int nr = noder.size();
+        
+        for (int i = 0; i < noder.size(); i++) {
+            if (noder.get(i).getName().toLowerCase().contains(temp.getName().toLowerCase())) {
+                noder.remove(i);
+            }
+        }
+        if (nr > noder.size()) {
+            noder.add(temp);
+        }
+    }
 
    
 
