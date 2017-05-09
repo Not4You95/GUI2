@@ -29,8 +29,7 @@ public class GUImodel {
     private File filename;
     private String OrgName;
     private Orginasation OrgTemp;
-    private Task taskTemp = null;
-    private int taskLevel;
+    private Task taskTemp = null; 
     private LocalDate dayOfMission;
     
     
@@ -44,8 +43,7 @@ public class GUImodel {
     }
       
     public void setDayOfMission(LocalDate date){
-     dayOfMission = date;
-        //System.out.println("Datum: "+dayOfMission.getDayOfMonth());
+     dayOfMission = date;        //
         
     }    
     
@@ -60,9 +58,8 @@ public class GUImodel {
     
     public ObservableList<Task> getTaskList(){
         ObservableList<Task> temp = FXCollections.observableArrayList();
-        for (int i = 0; i < Tasks.size(); i++) {
-            System.out.println( dayOfMission.getDayOfMonth());
-            if (dayOfMission.getDayOfMonth() == Tasks.get(i).getStartTime().get(Calendar.DAY_OF_MONTH) || dayOfMission.getDayOfMonth() == Tasks.get(i).getEndTime().get(Calendar.DAY_OF_MONTH)) {
+        for (int i = 0; i < Tasks.size(); i++) {            
+            if (dayOfMission.getDayOfMonth() == Tasks.get(i).getStartTime().get(Calendar.DAY_OF_MONTH) || dayOfMission.getDayOfMonth() <= Tasks.get(i).getEndTime().get(Calendar.DAY_OF_MONTH)) {
                 temp.add(Tasks.get(i));
             }
         }
@@ -222,17 +219,7 @@ public class GUImodel {
         ArrayList<Orginasation> orgList = new ArrayList<Orginasation>();
         Task task = new Task("Defend the hill", "Test", "7 Bataljonen");
         Task task2 = new Task("Defend the the food reserv","Test","Livgardet");
-        ArrayList<Task> taskList = new ArrayList<Task>();
-        Orginasation Gotland = new Orginasation();
-        Orginasation Blidö = new Orginasation();
-        Orginasation Öland = new Orginasation();
-       /* BFT – Blue Force Tracking
-COP – Common Operational Picture
-Voice – Streamed Voice
-ISR – Intelligence, surveillance and reconnaissance
-Video – Streamed Video
-Msg – Command and control messages
-Control – System Management*/
+        ArrayList<Task> taskList = new ArrayList<Task>();      
        
        Interface in1 = new Interface("BFT",InterfaceTypes.Tracking);
        Interface in2 = new Interface("Voice", InterfaceTypes.Voice);
@@ -302,34 +289,9 @@ Control – System Management*/
         Tasks.add(task);
         Tasks.add(task2);
         /////////////////////////////////////////////////////
-        Gotland.setTasks(taskList);
-        Gotland.setName("Gotland");
-        Gotland.setInfo("Defend Gtoland from Ryssland");
-        Gotland.setPriotetForAllTSN(priorityAndQulaityLevels.High);
-        Gotland.setQualityForAllTSN(priorityAndQulaityLevels.Medium);
-        //////////////////////////////////////////////////////
-        Öland.setTasks(taskList);
-        Öland.setName("Öland");
-        Öland.setInfo("Defend Öland from Denmark");
-        Öland.setPriotetForAllTSN(priorityAndQulaityLevels.High);
-        Öland.setQualityForAllTSN(priorityAndQulaityLevels.Low);
-        //////////////////////////////////////////////////////
-        Blidö.setTasks(taskList);
-        Blidö.setName("Blidö");
-        Blidö.setInfo("Defend from who?");
-        Blidö.setPriotetForAllTSN(priorityAndQulaityLevels.High);
-        Blidö.setQualityForAllTSN(priorityAndQulaityLevels.Medium);
-        ///////////////////////////////////////////////////////////////////////
-        Org.add(Öland);
-        Org.add(Gotland);
-        Org.add(Blidö);
+      
 
-       /*for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < temp.size() ; j++) {
-                System.out.println(org.getTasks().get(0).getNoder().get(j).getName());
-            }
-            
-        }*/
+      
        
         
     }

@@ -8,6 +8,7 @@ package gui2;
 import com.sun.javaws.Main;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
@@ -89,6 +90,7 @@ public class GUI2 extends Application {
    private DatePicker DatePicer;
    private final String pattern = "yyyy-mm-dd";
    private DateTimeFormatter dateFormatter;
+   private LocalDate DateToPresent;
     
     @Override   
     
@@ -106,6 +108,7 @@ public class GUI2 extends Application {
         Simulate.setSelected(false);
         menulist = new MenuBar();
         BackButton = new Button("Back");
+        DateToPresent = LocalDate.now();
         ///////////////////////////////////////////////////////////////////////
         BackButton.addEventFilter(ActionEvent.ACTION, new BackButton());
         Contolloer.SetDate(LocalDate.now());
@@ -219,7 +222,11 @@ public class GUI2 extends Application {
 
                @Override
         public void handle(ActionEvent event) {
-            Contolloer.SetDate(DatePicer.getValue());
+           
+            DateToPresent = DatePicer.getValue();
+            DatePicer.setValue(DateToPresent);
+            Contolloer.SetDate(DateToPresent);
+            
         }
     } 
    
@@ -460,12 +467,14 @@ public class GUI2 extends Application {
       TopLineLine2.setSpacing(20);
       //////Time Choise/////////////////////
         dateFormatter = DateTimeFormatter.ofPattern(pattern);
-        DatePicer = new DatePicker(LocalDate.now());
+        DatePicer = new DatePicker(DateToPresent);
         DatePicer.setShowWeekNumbers(true);
+        
         Tooltip tooltip = new Tooltip("Choose day, to see the missions belonging to that day");
         tooltip.setWrapText(true);
         DatePicer.setTooltip(tooltip);
-        StringConverter converter = new StringConverter<LocalDate>(){
+        
+        /*StringConverter converter = new StringConverter<LocalDate>(){
             @Override
             public String toString(LocalDate object) {
                 if (object != null) {
@@ -486,13 +495,14 @@ public class GUI2 extends Application {
                 }
             }
             
-        };
+        };*/
          
     
        
         
         DatePicer.setPromptText(pattern.toLowerCase());
         System.out.println("Time: "+DatePicer.getValue());
+        
         
         DatePicer.addEventHandler(ActionEvent.ACTION, new ChoiseOfDate());
         //tree.getSelectionModel().selectedItemProperty().addListener((v,oldvalue,newvalue) -> {Contolloer.newTabInterface(newvalue);});
@@ -501,6 +511,7 @@ public class GUI2 extends Application {
         
         ToplineVBox.getChildren().add(TopLineLine2);
         root.setTop(ToplineVBox);
+        DatePicer.requestFocus();
         
   }
   
@@ -705,8 +716,7 @@ public class GUI2 extends Application {
       
       tabPane.getTabs().add(tabP_2_P);
       
-  }  
-  
+  }    
   
   public void nodeAndComtypeTab(TSN temp,Interface itemp){
       

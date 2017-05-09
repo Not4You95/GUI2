@@ -40,6 +40,7 @@ public class guiControler {
     }
     
     public void SetDate(LocalDate date){
+        System.out.println("Contoler: "+date.toString());
         model.setDayOfMission(date);
         setScreenForPlanMode();
     }
@@ -182,7 +183,7 @@ public class guiControler {
      }
      
      public void newNode(TSN temp){
-         
+         model.newNode(temp);
      }
     
 }
