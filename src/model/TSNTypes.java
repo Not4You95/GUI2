@@ -12,7 +12,7 @@ import javax.lang.model.element.UnknownAnnotationValueException;
  * @author jonas
  */
 public enum TSNTypes {
-    Troups(1),UAV(2),Radar(3),Hospital(4),Comand_Central(5);
+    Troup(1),UAV(2),Radar(3),Hospital(4),Comand_Central(5);
     int Value= 0;
     
     TSNTypes(int ord) {

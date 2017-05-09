@@ -128,6 +128,7 @@ public class guiControler {
     
     public void choiseOfInterface(String temp){
         //gui.makeNewTabView(temp,"");
+        System.out.println("hello");
        
     }
     
@@ -140,11 +141,10 @@ public class guiControler {
         
     }
     
-    public void newTabNode(Object node){
-        System.out.println("New tab :"+node.toString());
+    public void newTabNode(Object node){        
         TSN temp = model.getNode(node.toString());
         if (temp != null) {
-            gui.nodeAndComtypeTab(temp.getName(), temp.getInfo());
+            gui.nodeAndComtypeTab(temp);
         }
     }
     
@@ -165,11 +165,15 @@ public class guiControler {
    }
       public void upDateInterface(){
          
-          gui.InterfaceScreen(model.getInterfaceTypes());
+          gui.InterfaceScreen(model.getInterfaces());
       }
       
-     public void setNodesAndComTypeForP_2_P(String temp){
-         NodesAndComType.add(temp);         
+     public void setNodesAndComTypeForP_2_P(String Node1,String Node2,String Com_type,String priority,String Quality){
+         System.out.println("Node 1: "+Node1);
+         System.out.println("Node 2: "+Node2);
+         System.out.println("Com type: "+Com_type);
+         System.out.println("Priority: "+priority);
+         System.out.println("Quality: "+Quality);
      }
     
 }

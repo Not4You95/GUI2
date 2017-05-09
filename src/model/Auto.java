@@ -107,8 +107,8 @@ public class Auto {
      public void handle( ActionEvent e ){
        MenuItem src = (MenuItem)e.getTarget();
        String text = src.getText();
-       currentParentField.setText( text );
-       gui.SetP_2_PChoises(text);
+       textField.setText(text);
+       //gui.SetP_2_PChoises(text);
        
     }
      

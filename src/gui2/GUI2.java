@@ -526,7 +526,7 @@ public class GUI2 extends Application {
   }
   
   public void screenForPlanMode(ObservableList<Task> Tasks){
-      tabPlanScren = new Tab("Misions");
+      tabPlanScren = new Tab("Missions");
       tabPane.getTabs().clear();
       TopLine.getChildren().clear();
       root.setLeft(null);
@@ -546,14 +546,14 @@ public class GUI2 extends Application {
       
       table.setEditable(true);
  
-        TableColumn misionColumn = new TableColumn("Mision");
+        TableColumn misionColumn = new TableColumn("Mission");
         misionColumn.setMinWidth(200);
         misionColumn.setCellValueFactory(
             new PropertyValueFactory<Task, String>("Name"));
       
  
  
-        TableColumn InfoColumn = new TableColumn("Mision info");
+        TableColumn InfoColumn = new TableColumn("Mission info");
         InfoColumn.setMinWidth(100);
         InfoColumn.setCellValueFactory(
             new PropertyValueFactory<Task, String>("info"));
@@ -627,40 +627,39 @@ public class GUI2 extends Application {
 
   public void P_2_PScreen(ArrayList<String> Nodes,ArrayList<String> inters){
       String retunNode1="",beforeNode1,retunNode2="" ,beforeNode2,returnComType="",beforeCom;
-     
+      ObservableList<String> levels = FXCollections.observableArrayList("High","Medium","Low");
       tabP_2_P = new Tab("P_2_P");
       tabPane.getTabs().remove(tabP_2_P);
       GridPane pnet = new GridPane();
       Label nod1 = new Label("Node 1");
       Label nod2 = new Label("Node 2");
       Label comType = new Label("Com type");
-      TextField textnode1 = new TextField();
+     final TextField textnode1 = new TextField();
       textnode1.setPromptText("Node 1");
       new Auto(Nodes, textnode1,this);      
-      TextField textnode2 = new TextField();      
+    final TextField textnode2 = new TextField();      
       textnode2.setPromptText("Node 2");
       new Auto(Nodes, textnode2,this);
-      TextField textComType = new TextField();
+    final TextField textComType = new TextField();
       textComType.setPromptText("Comunication type");
       new Auto(inters, textComType,this);
-      ComboBox<String> priBox = new ComboBox<>();
-      priBox.setPromptText("Priority");
-      ComboBox<String> QualbBox = new ComboBox<>();
+     final ComboBox<String> priBox = new ComboBox<>(levels);
+     priBox.setPromptText("Priority");
+    final ComboBox<String> QualbBox = new ComboBox<>(levels);
       QualbBox.setPromptText("Quality");
       okButton = new Button("Ok");
-      okButton.addEventHandler(ActionEvent.ACTION, new P_2_PButtonChice(){
-          
-      });      
-        beforeNode1 = textnode1.getText();
-        beforeNode2 = textnode2.getText();
-        beforeCom = textComType.getText();
-        System.out.println("test: "+textnode1.getText());
-      
-      if(retunNode1 != beforeNode1 && textnode2.getText() != beforeNode2 && beforeCom != textComType.getText()) {
-          System.out.println("Node 1: "+retunNode1);
-          System.out.println("Node 2: "+retunNode2);
-          System.out.println("Com type: "+returnComType);
-      }
+      //okButton.addEventHandler(ActionEvent.ACTION, new P_2_PButtonChice(){});
+       //tree.getSelectionModel().selectedItemProperty().addListener((v,oldvalue,newvalue) -> {Contolloer.newTabNode(newvalue);}); 
+       okButton.setOnAction(new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+              if (priBox.getValue() != null && QualbBox.getValue() != null && !textnode1.getText().trim().isEmpty() && !textnode2.getText().trim().isEmpty() && !textComType.getText().trim().isEmpty()) {
+                  Contolloer.setNodesAndComTypeForP_2_P(textnode1.getText(),textnode2.getText(),textComType.getText(),priBox.getValue(),QualbBox.getValue());
+                  tabPane.getTabs().remove(tabP_2_P);
+              }
+          }
+      });
+        
       
       pnet.setHgap(20);
       pnet.setVgap(20);
@@ -702,24 +701,24 @@ public class GUI2 extends Application {
       
       tabPane.getTabs().add(tabP_2_P);
       
-  }
+  }  
   
-  public void SetP_2_PChoises(String input){
-      System.out.println("GUI: "+input); 
-      Contolloer.setNodesAndComTypeForP_2_P(input);
-  }
   
-  public void nodeAndComtypeTab(String Name,String info){
-      Tab tab = new Tab(Name);
+  public void nodeAndComtypeTab(TSN temp){
+      Tab tab = new Tab(temp.getName());
+      ObservableList<String> levels = FXCollections.observableArrayList("High","Medium","Low");
       GridPane netPane = new GridPane();
       Label PriLabel = new Label("Priority: ");
       Label QuaLabel = new Label("Quality: ");
       Label infoLabel = new Label("Information");
-      ComboBox<String> PriBox = new ComboBox<>();
+      ComboBox<String> PriBox = new ComboBox<>(levels);
+      PriBox.setValue(temp.getPriority());
+      
       PriBox.setPromptText("Priority");
-      ComboBox<String> QulBox = new ComboBox<>();
+      ComboBox<String> QulBox = new ComboBox<>(levels);
+      QulBox.setValue(temp.getQuality());
       QulBox.setPromptText("Quality");
-      TextArea text = new TextArea(info);
+      TextArea text = new TextArea(temp.getQuality());
        text.setMaxWidth(150);
        text.setMaxHeight(110);
        text.setPrefColumnCount(10);
@@ -738,8 +737,10 @@ public class GUI2 extends Application {
       netPane.add(text, 1, 3);
       
       //ChoiceBox
-      netPane.add(PriBox, 2, 1);
-      netPane.add(QulBox, 3, 1);
+      netPane.add(PriLabel, 2, 1);
+      netPane.add(PriBox, 2, 2);
+      netPane.add(QuaLabel, 3, 1);
+      netPane.add(QulBox, 3, 2);
       
       tab.setContent(netPane);
               

@@ -8,17 +8,19 @@ package model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.jar.Attributes;
+import javafx.beans.property.SimpleStringProperty;
 
 /**
  *
  * @author jonas
  */
 public class TSN implements Serializable{
-private String name;
+private SimpleStringProperty name = new SimpleStringProperty();
 private TSNTypes type;
-private String info;
+private SimpleStringProperty info = new SimpleStringProperty();
 private ArrayList<Interface> ListOfInterface;
-
+private SimpleStringProperty Priority = new SimpleStringProperty();
+private SimpleStringProperty quality = new SimpleStringProperty();
 
 /**
  * Constructur
@@ -26,7 +28,7 @@ private ArrayList<Interface> ListOfInterface;
  */
 public TSN(String name)
 {
-       this.name = name;
+       setName(name);
        ListOfInterface = new ArrayList<Interface>();
     
 }
@@ -41,16 +43,7 @@ public TSN(){
     /**
      * @return the name
      */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+   
     public void SetPriorityForAllInterface(priorityAndQulaityLevels priority){
         for (int i = 0; i < ListOfInterface.size(); i++) {
             ListOfInterface.get(i).SetPriority(priority);
@@ -102,16 +95,53 @@ public TSN(){
     }
 
     /**
-     * @return the info
+     * @return the name
      */
-    public String getInfo() {
-        return info;
+    public String getName() {
+        return name.get();
     }
 
     /**
-     * @param info the info to set
+     * @param name the name to set
      */
-    public void setInfo(String info) {
-        this.info = info;
+    public void setName(String name) {
+        this.name.set(name);
     }
+
+    /**
+     * @return the info
+     */
+    public String getInfo() {
+        return info.get();
+    }
+
+    /**
+     * @return the Priority
+     */
+    public String getPriority() {
+        return Priority.get();
+    }
+
+    /**
+     * @param Priority the Priority to set
+     */
+    public void setPriority(String Priority) {
+        this.Priority.set(Priority);
+    }
+
+    /**
+     * @return the quality
+     */
+    public String getQuality() {
+        return quality.get();
+    }
+
+    /**
+     * @param quality the quality to set
+     */
+    public void setQuality(String quality) {
+        this.quality.set(quality);
+    }
+
+   
 }

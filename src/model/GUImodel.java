@@ -123,17 +123,7 @@ public class GUImodel {
        
        temp = OrgTemp.getQualityForAllTSN();
        return temp;
-    }
-    
-    public ArrayList<Interface> getInterfaceTypes(){
-       ArrayList<Interface> temp = new ArrayList<>();
-       
-        
-        return temp;
-        
-    }
-    
-   
+    } 
     
     public ArrayList<TSN> getNodes(){
         ArrayList<TSN> temp  = new ArrayList<>();
@@ -164,16 +154,31 @@ public class GUImodel {
         return null;
     }
     
-    public Interface getInterface(String name){
-        
-        return null;    
-}
+    public ArrayList<Interface> getInterfaces(){
+         ArrayList<Interface> temp = new ArrayList<>();
+        ArrayList<Interface> Itemp = new ArrayList<>();
+        Itemp.addAll(taskTemp.getInterfaces());
+        for (int i = 0; i < Itemp.size(); i++) {
+           // temp.add(Itemp.get(i).getName());           
+                if (!temp.contains(Itemp.get(i))) {
+                temp.add(Itemp.get(i));
+            }
+            
+        }
+        return temp;
+    }
+          
+
     public ArrayList<String> getInterfacesOfTypeStrings(){
         ArrayList<String> temp = new ArrayList<>();
         ArrayList<Interface> Itemp = new ArrayList<>();
         Itemp.addAll(taskTemp.getInterfaces());
         for (int i = 0; i < Itemp.size(); i++) {
-            temp.add(Itemp.get(i).getName());
+           // temp.add(Itemp.get(i).getName());           
+                if (!temp.contains(Itemp.get(i).getName())) {
+                temp.add(Itemp.get(i).getName());
+            }
+            
         }
         return temp;
     }
@@ -195,7 +200,7 @@ Msg – Command and control messages
 Control – System Management*/
        
        Interface in1 = new Interface("BFT", priorityAndQulaityLevels.High, priorityAndQulaityLevels.High,InterfaceTypes.Tracking);
-       Interface in2 = new Interface("Voice", priorityAndQulaityLevels.Low, priorityAndQulaityLevels.Low, InterfaceTypes.Mesagge);
+       Interface in2 = new Interface("Voice", priorityAndQulaityLevels.Low, priorityAndQulaityLevels.Low, InterfaceTypes.Voice);
        Interface in3 = new Interface("ISR", priorityAndQulaityLevels.Medium, priorityAndQulaityLevels.Medium, InterfaceTypes.Mesagge);
        Interface in4  =new Interface("Video", priorityAndQulaityLevels.Medium, priorityAndQulaityLevels.Low, InterfaceTypes.Video);
        Interface in5 = new Interface("Contol", priorityAndQulaityLevels.High, priorityAndQulaityLevels.High, InterfaceTypes.Mesagge);
@@ -229,13 +234,13 @@ Control – System Management*/
         three.setType(TSNTypes.Radar);
         TSN FOUR = new TSN("Troups");
         FOUR.addInterfaceArray(listInter);
-        FOUR.setType(TSNTypes.Troups);
+        FOUR.setType(TSNTypes.Troup);
         TSN five = new TSN("Military Hospital");
         five.addInterfaceArray(listInter);
         five.setType(TSNTypes.Hospital);
         TSN six = new TSN("BMS/Soldier");
         six.addInterfaceArray(listInter);
-        six.setType(TSNTypes.Troups);
+        six.setType(TSNTypes.Troup);
         TSN seven = new TSN("Deployed c2");
         seven.addInterfaceArray(listInter);
         seven.setType(TSNTypes.Comand_Central);
