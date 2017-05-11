@@ -85,15 +85,14 @@ public class GUI2 extends Application {
    private VBox ToplineVBox,CentetVBox;
    private MenuBar menulist;
    private GridPane Net;
-   private Tab Overview,Interface,Nodes,tabPlanScren,tabP_2_P;
+   private Tab Overview,Interface,Nodes,tabPlanScren,tabP_2_P,tabLiveMode;
    private TabPane tabPane;
    private ArrayList<TreeItem> ListOfInterfaceArea,ListOfNodesArea;
    private DatePicker DatePicer;
    private final String pattern = "yyyy-mm-dd";
    private DateTimeFormatter dateFormatter;
-   private LocalDate DateToPresent;
-   private boolean lockUpNode2 = false;
-   private TextField textnode1P2P,textnode2P2P,textComTypeP2P;
+   private LocalDate DateToPresent;  
+   
     
     @Override   
     
@@ -141,17 +140,7 @@ public class GUI2 extends Application {
            
         
         
-   }
-  
-  public void SetScreenForLiveMode(){
-       Label Task = new Label("Task");
-       TopLineLine2.getChildren().clear();
-       ToplineVBox.getChildren().clear();
-      TopLineLine2.getChildren().addAll(Task);
-      tabPane.getTabs().clear();
-      ToplineVBox.getChildren().addAll(menulist,TopLineLine2);
-      root.setLeft(ListOfTasks);
-  }  
+   } 
   
   public void ModeMenu(){
     ModeMenu = new Menu("_Mode");
@@ -551,6 +540,107 @@ public class GUI2 extends Application {
        root.setTop(ToplineVBox);
   }
   
+  public void SetScreenForLiveMode(ObservableList<Task> Tasks){
+       Label Task = new Label("Task");
+       TopLineLine2.getChildren().clear();
+       ToplineVBox.getChildren().clear();
+      TopLineLine2.getChildren().addAll(Task);
+      tabPane.getTabs().clear();
+      ToplineVBox.getChildren().addAll(menulist,TopLineLine2);
+     // root.setLeft(ListOfTasks);
+      
+     
+      tabLiveMode = new Tab("Live");
+      tabPane.getTabs().clear();
+      
+      TableView<Task> table = new TableView();
+      table.setEditable(true);
+      // Colum 1 Mission
+      TableColumn misionColumn = new TableColumn("Mission");
+        misionColumn.setMinWidth(200);
+        misionColumn.setCellValueFactory(
+            new PropertyValueFactory<Task, String>("Name"));
+        
+           
+         
+                     
+      
+        
+      // Colum 2 info
+      TableColumn<Task,String> InfoColumn = new TableColumn("Info");
+        InfoColumn.setMinWidth(100);
+        InfoColumn.setCellValueFactory(new PropertyValueFactory<Task, String>("info"));
+        InfoColumn.setCellFactory(new Callback<TableColumn<Task,String>,TableCell<Task,String>>(){
+           @Override
+           public TableCell<Task, String> call(TableColumn<Task, String> param) {
+               return new TextFieldTableCell<Task,String>(){
+                 @Override public void updateItem(String string,boolean  isEmpty){
+                    super.updateItem(string, isEmpty);
+                     if (!isEmpty) {
+                         Task temp = getTableView().getItems().get(getTableRow().getIndex());
+                         Tooltip tip = new Tooltip(temp.getInfo());
+                         setTooltip(tip);
+                         setEditable(false);
+                     }
+                    
+                 }
+               };
+           };
+            
+        });
+        
+      // Comul 3 Error for Com type
+      TableColumn comErrors = new TableColumn("Error Com type");
+      comErrors.setMinWidth(200);     
+        comErrors.setCellValueFactory(new PropertyValueFactory<Task,ObservableList<String>>("listOfErrorStrings"));
+        comErrors.setCellFactory(new Callback<TableColumn<Task,String>,TableCell<Task,String>>() {
+           @Override
+           public TableCell<Task, String> call(TableColumn<Task, String> param) {
+              ComboBoxTableCell<Task,String> cell =  new ComboBoxTableCell<Task,String>(){
+                /*  @Override
+                  public void updateItem(String item, boolean empty){
+                      super.updateItem(item, empty);
+                      System.out.println("Hello1");
+                     if (!empty) {
+                          Interface i1 = new Interface("Test", InterfaceTypes.Video);
+                          
+                          ObservableList<String> temp = FXCollections.observableArrayList("Hej","Hello");
+                      //Task temp = getTableView().getItems().get(getTableRow().getIndex());
+                      ObservableList<Interface> test = getTableView().getItems().get(getTableRow().getIndex()).getListOfErrors();    
+                         for (int i = 0; i < test.size(); i++) {
+                             temp.add(test.get(i).getName());
+                         }
+                     
+                      
+                           getItems().addAll(temp);
+                         
+                          System.out.println("Hello2: "+getItems().get(0));
+                      }
+                  }*/
+              };
+               return cell;
+           }
+       });
+        
+        /*comErrors.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Task,Integer>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<Task,Integer> t) {               
+               /* ((Task) t.getTableView().getItems().get(
+                        t.getTablePosition().getRow())
+                        ).setRank(t.getNewValue());
+               
+            }
+        });*/
+        
+        table.setItems(Tasks);
+        table.getColumns().addAll(misionColumn,InfoColumn,comErrors);
+        tabLiveMode.setContent(table);
+        tabLiveMode.setClosable(false);
+        
+      tabPane.getTabs().add(tabLiveMode);
+      root.setCenter(tabPane);
+  }  
+  
   public void screenForPlanMode(ObservableList<Task> Tasks){
       tabPlanScren = new Tab("Missions");
       tabPane.getTabs().clear();
@@ -669,25 +759,34 @@ public class GUI2 extends Application {
       // text.setMouseTransparent(true);
       // text.setFocusTraversable(false);
       ///Search window for node 1
-      textnode1P2P = new TextField();
+     final TextField textnode1P2P = new TextField();
       textnode1P2P.setPromptText("Node 1");
       new Auto(Nodes, textnode1P2P);  
-      textnode1P2P.setOnAction(new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent event) {
-              lockUpNode2 = true;
-              textnode2P2P.setMouseTransparent(false);
-              textnode2P2P.setFocusTraversable(true);
-              System.out.println("Hello");
-          }
-      });      
+         
       
       // Search window for node 2
-      textnode2P2P = new TextField();      
+    final TextField textnode2P2P = new TextField();      
       textnode2P2P.setPromptText("Node 2");
       new Auto(Nodes, textnode2P2P);
       textnode2P2P.setFocusTraversable(false);
       textnode2P2P.setMouseTransparent(true);
+      
+       textnode1P2P.setOnAction(new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+             
+              textnode2P2P.setMouseTransparent(false);
+              textnode2P2P.setFocusTraversable(true);
+              System.out.println("Hello");
+          }
+      });  
+      // Search window for com type
+      TextField textComTypeP2P = new TextField();
+      textComTypeP2P.setPromptText("Comunication type");
+      new Auto(inters, textComTypeP2P);
+      textComTypeP2P.setFocusTraversable(false);
+      textComTypeP2P.setMouseTransparent(true);
+      
       textnode2P2P.setOnAction(new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent event) {
@@ -695,15 +794,6 @@ public class GUI2 extends Application {
               textComTypeP2P.setFocusTraversable(true);
           }
       });
-      
-      // Search window for com type
-      textComTypeP2P = new TextField();
-      textComTypeP2P.setPromptText("Comunication type");
-      new Auto(inters, textComTypeP2P);
-      textComTypeP2P.setFocusTraversable(false);
-      textComTypeP2P.setMouseTransparent(true);
-      
-      
       
       //Combobox for Priority
      final ComboBox<String> priBox = new ComboBox<>(levels);

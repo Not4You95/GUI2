@@ -106,8 +106,9 @@ public class guiControler {
         }else if(Live){
             ArrayList<String> temp = new ArrayList<String>(); 
             temp.addAll(model.GetTaskNames());
-            gui.SetScreenForLiveMode();
-            gui.UppdateListOfTask(temp);             
+            model.setDayOfMission(LocalDate.now());
+            gui.SetScreenForLiveMode(model.getTaskList());
+            //gui.UppdateListOfTask(temp);             
             System.out.println("Hello");
               
             

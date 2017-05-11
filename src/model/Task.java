@@ -15,6 +15,8 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  *
@@ -28,6 +30,11 @@ public class Task implements Serializable{
      private IntegerProperty rank = new SimpleIntegerProperty();
      private Calendar StartTime ;
      private Calendar EndTime ;
+     private  ObservableList<Interface> listOfErrors;
+     private ObservableList<String> listOfErrorsString = FXCollections.observableArrayList();
+     private SimpleStringProperty testSt = new SimpleStringProperty();
+     private IntegerProperty testIn = new SimpleIntegerProperty();
+     private ArrayList<String> listOfErrorStringsArrayList = new ArrayList<>();
      //private final priorityAndQulaityLevels priorityFromPlan ;
      
      
@@ -39,6 +46,8 @@ public class Task implements Serializable{
          setName(name);
          setInfo(info);
          setOrginsastion(Orginsation);
+         listOfErrors =FXCollections.observableArrayList();
+        testSt.set("Test");
          
          
      }
@@ -175,6 +184,92 @@ public class Task implements Serializable{
             noder.add(temp);
         }
     }
+
+    
+    
+    public void addListOfErrors(Interface input){
+        getListOfErrors().add(input);
+    }
+
+    /**
+     * @return the listOfErrors
+     */
+    public ObservableList<Interface> getListOfErrors() {
+        return listOfErrors;
+    }
+
+    /**
+     * @param listOfErrors the listOfErrors to set
+     */
+    public void setListOfErrors(ObservableList<Interface> listOfErrors) {
+        this.listOfErrors = listOfErrors;
+    }
+
+    /**
+     * @return the testSt
+     */
+    public String getTestSt() {
+        return testSt.get();
+    }
+
+    /**
+     * @param testSt the testSt to set
+     */
+    public void setTestSt(String testSt) {
+        this.testSt.set(testSt);
+    }
+
+    /**
+     * @return the testIn
+     */
+    public int getTestIn() {
+        return testIn.get();
+    }
+
+    /**
+     * @param testIn the testIn to set
+     */
+    public void setTestIn(int testIn) {
+        this.testIn.set(testIn);
+    }
+
+   
+
+    /**
+     * @return the listOfErrorStringsArrayList
+     */
+    public ArrayList<String> getListOfErrorStringsArrayList() {
+            for (int i = 0; i < listOfErrors.size(); i++) {
+            listOfErrorStringsArrayList.add(listOfErrors.get(i).getName());
+        }
+        return listOfErrorStringsArrayList;
+    }
+
+    /**
+     * @param listOfErrorStringsArrayList the listOfErrorStringsArrayList to set
+     */
+    public void setListOfErrorStringsArrayList(ArrayList<String> listOfErrorStringsArrayList) {
+        this.listOfErrorStringsArrayList = listOfErrorStringsArrayList;
+    }
+
+    /**
+     * @return the listOfErrorsString
+     */
+    public ObservableList<String> getListOfErrorsString() {
+        return listOfErrorsString;
+    }
+
+    /**
+     * @param listOfErrorsString the listOfErrorsString to set
+     */
+    public void setListOfErrorsString(ObservableList<String> listOfErrorsString) {
+        this.listOfErrorsString = listOfErrorsString;
+    }
+
+    /**
+     * @return the test
+     */
+   
 
    
 

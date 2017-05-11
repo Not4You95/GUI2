@@ -275,6 +275,11 @@ public class GUImodel {
         
         System.out.println("-----------------------------------------------");
         ///////////////////////////////////////////////////////////////////////
+        task.addListOfErrors(in1);
+        task.addListOfErrors(in2);
+        
+        task2.addListOfErrors(in3);
+        task2.addListOfErrors(in4);
         
         temp.add(one);
         temp.add(two);
