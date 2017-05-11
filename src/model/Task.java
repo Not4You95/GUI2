@@ -35,6 +35,7 @@ public class Task implements Serializable{
      private SimpleStringProperty testSt = new SimpleStringProperty();
      private IntegerProperty testIn = new SimpleIntegerProperty();
      private ArrayList<String> listOfErrorStringsArrayList = new ArrayList<>();
+     private SimpleStringProperty test = new SimpleStringProperty();
      //private final priorityAndQulaityLevels priorityFromPlan ;
      
      
@@ -264,6 +265,21 @@ public class Task implements Serializable{
      */
     public void setListOfErrorsString(ObservableList<String> listOfErrorsString) {
         this.listOfErrorsString = listOfErrorsString;
+    }
+
+    /**
+     * @return the test
+     */
+    public String getTest() {
+        setTest(listOfErrors.get(0).getName());
+        return test.get();
+    }
+
+    /**
+     * @param test the test to set
+     */
+    public void setTest(String test) {
+        this.test.set(test);
     }
 
     /**

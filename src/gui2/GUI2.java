@@ -559,8 +559,7 @@ public class GUI2 extends Application {
       TableColumn misionColumn = new TableColumn("Mission");
         misionColumn.setMinWidth(200);
         misionColumn.setCellValueFactory(
-            new PropertyValueFactory<Task, String>("Name"));
-        
+            new PropertyValueFactory<Task, String>("Name")); 
            
          
                      
@@ -592,48 +591,97 @@ public class GUI2 extends Application {
       // Comul 3 Error for Com type
       TableColumn comErrors = new TableColumn("Error Com type");
       comErrors.setMinWidth(200);     
-        comErrors.setCellValueFactory(new PropertyValueFactory<Task,ObservableList<String>>("listOfErrorStrings"));
-        comErrors.setCellFactory(new Callback<TableColumn<Task,String>,TableCell<Task,String>>() {
+      comErrors.setCellValueFactory(new PropertyValueFactory<Task,String>("test"));
+      comErrors.setCellFactory(new Callback<TableColumn<Task,String>,TableCell<Task,String>>() {
            @Override
            public TableCell<Task, String> call(TableColumn<Task, String> param) {
               ComboBoxTableCell<Task,String> cell =  new ComboBoxTableCell<Task,String>(){
-                /*  @Override
+                  
+                  @Override
                   public void updateItem(String item, boolean empty){
                       super.updateItem(item, empty);
-                      System.out.println("Hello1");
-                     if (!empty) {
-                          Interface i1 = new Interface("Test", InterfaceTypes.Video);
-                          
-                          ObservableList<String> temp = FXCollections.observableArrayList("Hej","Hello");
+                      System.out.println("--------------------------------------------------");
+                     if (!empty) {                        
+                          getItems().clear();
+                          ObservableList<String> temp = FXCollections.observableArrayList();
+                          ObservableList<String> temp2 = FXCollections.observableArrayList("Hello","Hej");
                       //Task temp = getTableView().getItems().get(getTableRow().getIndex());
                       ObservableList<Interface> test = getTableView().getItems().get(getTableRow().getIndex()).getListOfErrors();    
                          for (int i = 0; i < test.size(); i++) {
                              temp.add(test.get(i).getName());
-                         }
-                     
+                         }                    
                       
-                           getItems().addAll(temp);
-                         
-                          System.out.println("Hello2: "+getItems().get(0));
+                          // getItems().addAll(temp);*/
+                         for (int i = 0; i < temp.size(); i++) {
+                             System.out.println("Test: "+temp.get(i));
+                         }
+                         getItems().addAll(temp2);
+                         // System.out.println("Hello2: "+test.get(0).getName());
+                         Tooltip tip = new Tooltip();
+                         tip.setText(temp.toString());
+                         setTooltip(tip);
+                          
                       }
-                  }*/
+                  }
               };
                return cell;
            }
        });
         
-        /*comErrors.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Task,Integer>>() {
+        comErrors.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Task,String>>() {
             @Override
-            public void handle(TableColumn.CellEditEvent<Task,Integer> t) {               
+            public void handle(TableColumn.CellEditEvent<Task,String> t) {               
                /* ((Task) t.getTableView().getItems().get(
                         t.getTablePosition().getRow())
-                        ).setRank(t.getNewValue());
+                        ).setRank(t.getNewValue());*/
+                System.out.println("Action: "+t.getNewValue());
                
             }
-        });*/
+        });
+        
+        
+        //Colum 4 Error for 
+        TableColumn NodeErros = new TableColumn("Error Nodes");
+        NodeErros.setMinWidth(200);
+        NodeErros.setCellValueFactory(new PropertyValueFactory<Task,String>(""));
+        NodeErros.setCellFactory(new Callback<TableColumn<Task,String>,TableCell<Task,String>>() {
+           @Override
+           public TableCell<Task, String> call(TableColumn<Task, String> param) {
+             ComboBoxTableCell<Task,String> cell =  new ComboBoxTableCell<Task,String>(){
+                  
+                  @Override
+                  public void updateItem(String item, boolean empty){
+                      super.updateItem(item, empty);
+                      System.out.println("--------------------------------------------------");
+                     if (!empty) {                        
+                          getItems().clear();
+                          ObservableList<String> temp = FXCollections.observableArrayList();
+                          ObservableList<String> temp2 = FXCollections.observableArrayList("Hello","Hej");
+                      //Task temp = getTableView().getItems().get(getTableRow().getIndex());
+                      ObservableList<Interface> test = getTableView().getItems().get(getTableRow().getIndex()).getListOfErrors();    
+                         for (int i = 0; i < test.size(); i++) {
+                             temp.add(test.get(i).getName());
+                         }                    
+                      
+                          // getItems().addAll(temp);*/
+                         for (int i = 0; i < temp.size(); i++) {
+                             System.out.println("Test: "+temp.get(i));
+                         }
+                         getItems().addAll(temp2);
+                         Tooltip tip = new Tooltip();
+                         tip.setText(temp.toString());
+                         setTooltip(tip);
+                         // System.out.println("Hello2: "+test.get(0).getName());
+                          
+                      }
+                  }
+              };
+               return cell;
+           }
+       });
         
         table.setItems(Tasks);
-        table.getColumns().addAll(misionColumn,InfoColumn,comErrors);
+        table.getColumns().addAll(misionColumn,InfoColumn,comErrors,NodeErros);
         tabLiveMode.setContent(table);
         tabLiveMode.setClosable(false);
         
@@ -762,6 +810,7 @@ public class GUI2 extends Application {
      final TextField textnode1P2P = new TextField();
       textnode1P2P.setPromptText("Node 1");
       new Auto(Nodes, textnode1P2P);  
+      textnode1P2P.setFocusTraversable(true);
          
       
       // Search window for node 2
@@ -969,18 +1018,7 @@ public class GUI2 extends Application {
       tab.setContent(netPane);
               
       tabPane.getTabs().add(tab);
-  }
-
-    private static class EventHandlerImpl implements EventHandler<KeyEvent> {
-
-        public EventHandlerImpl() {
-        }
-
-        @Override
-        public void handle(KeyEvent event) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-    }
+  }    
     
     
 }
