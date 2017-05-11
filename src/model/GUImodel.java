@@ -51,7 +51,8 @@ public class GUImodel {
         ArrayList<String> temp = new ArrayList<String>();
         for (int i = 0; i < Tasks.size(); i++) {
             temp.add(Tasks.get(i).getName());
-        }
+        }        
+        
         
         return temp;
     }
@@ -59,7 +60,7 @@ public class GUImodel {
     public ObservableList<Task> getTaskList(){
         ObservableList<Task> temp = FXCollections.observableArrayList();
         for (int i = 0; i < Tasks.size(); i++) {            
-            if (dayOfMission.getDayOfMonth() == Tasks.get(i).getStartTime().get(Calendar.DAY_OF_MONTH) || dayOfMission.getDayOfMonth() <= Tasks.get(i).getEndTime().get(Calendar.DAY_OF_MONTH)) {
+            if (dayOfMission.getDayOfMonth() == Tasks.get(i).getStartTime().get(Calendar.DAY_OF_MONTH) ||  dayOfMission.getDayOfMonth() <= Tasks.get(i).getEndTime().get(Calendar.DAY_OF_MONTH)) {
                 temp.add(Tasks.get(i));
             }
         }
@@ -86,16 +87,15 @@ public class GUImodel {
     
     public Calendar getEndDate(){
         return taskTemp.getEndTime();
-    }    
-    
-    public void SaveToFile() throws IOException, AlertToUser{
-           SaveAndRead.writeToFile(Org, filename);          
-    }
-    
-    public void ReadFromFile() throws AlertToUser, IOException, ClassNotFoundException{
-         
-         Org.add(SaveAndRead.readFromFile(filename));
-        
+    }       
+   
+    public Task getTask(){
+        if (taskTemp != null) {
+            return taskTemp;
+        }
+        else{
+            return null;
+        }
     }
     
     public String GetOrgInfo(){
@@ -217,8 +217,9 @@ public class GUImodel {
       public void test() {
           ArrayList<TSN> temp = new ArrayList<TSN>();
         ArrayList<Orginasation> orgList = new ArrayList<Orginasation>();
-        Task task = new Task("Defend the hill", "Test", "7 Bataljonen");
-        Task task2 = new Task("Defend the the food reserv","Test","Livgardet");
+        Task task = new Task("Defend the hill", "Defend the hill from being occupied", "7 Bataljonen");
+        Task task2 = new Task("Defend the the food reserve","Defend the food from unauthorized people","Livgardet");
+      
         ArrayList<Task> taskList = new ArrayList<Task>();      
        
        Interface in1 = new Interface("BFT",InterfaceTypes.Tracking);
@@ -226,6 +227,7 @@ public class GUImodel {
        Interface in3 = new Interface("ISR", InterfaceTypes.Mesagge);
        Interface in4  =new Interface("Video",  InterfaceTypes.Video);
        Interface in5 = new Interface("Contol", InterfaceTypes.Mesagge);
+       in1.setInfo("Blue Force Tracking is GPS system that provieds location infromation");
        
        ArrayList<Interface> listInter = new ArrayList<>();
        listInter.add(in1);

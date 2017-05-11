@@ -63,7 +63,7 @@ public class guiControler {
    
     
     public void Overview(){
-        gui.OverViewSceen(model.GetOrgPriorityForAll(),model.GetOrgInfo(),model.getStarDate(),model.getEndDate());
+        gui.OverViewSceen(model.GetOrgPriorityForAll(),model.GetOrgInfo(),model.getStarDate(),model.getEndDate(),model.getTask());
        
     }
     

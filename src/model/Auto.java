@@ -34,10 +34,10 @@ public class Auto {
     private ContextMenu popup;
     private String Returntemp="";
     private ArrayList<MenuItem> ListOfMenuItems = new ArrayList<>();
-    private GUI2 gui;
     
-    public Auto(ArrayList<String> temp,TextField fieldInput,GUI2 GUICLASS){
-        this.gui = GUICLASS;
+    
+    public Auto(ArrayList<String> temp,TextField fieldInput){
+       
         this.ListOfStrings.addAll(temp);
         this.textField = fieldInput;        
         this.textField.setOnKeyPressed(this::handleOnKeyPressed);
@@ -108,7 +108,7 @@ public class Auto {
        MenuItem src = (MenuItem)e.getTarget();
        String text = src.getText();
        textField.setText(text);
-       //gui.SetP_2_PChoises(text);
+       
        
     }
      

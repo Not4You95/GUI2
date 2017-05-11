@@ -48,6 +48,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -91,6 +92,8 @@ public class GUI2 extends Application {
    private final String pattern = "yyyy-mm-dd";
    private DateTimeFormatter dateFormatter;
    private LocalDate DateToPresent;
+   private boolean lockUpNode2 = false;
+   private TextField textnode1P2P,textnode2P2P,textComTypeP2P;
     
     @Override   
     
@@ -338,27 +341,29 @@ public class GUI2 extends Application {
         }
     }   
     
-  public void  OverViewSceen(int Rank,String info,Calendar startDate,Calendar endDate){
+  public void  OverViewSceen(int Rank,String info,Calendar startDate,Calendar endDate, Task temp){
         Net = new GridPane();
         CenterHBox = new HBox();
         CentetVBox = new VBox();
         Label labelText = new Label("Information:");
         //Text texttest = new Text(info);
-        TextArea text = new TextArea(info);
+        TextArea text = new TextArea(temp.getInfo());
         text.setMaxWidth(150);
         text.setPrefColumnCount(10);
         text.setWrapText(true);
         text.setEditable(false);
+        text.setMouseTransparent(true);
+        text.setFocusTraversable(false);
         
         ////////////////////////////////////////////////////////////////
-        System.out.println("This mision has priority: "+Rank);
+        System.out.println("This mision has priority: "+temp.getRank());
         //System.out.println("of: "+TotalRank);
         
         ////////////////////////////////////////////////////////////////
         
-        Label globalPriotet = new Label("This mision has priority: "+Rank);
-        Label startDayLabel = new Label("The mission begins at: "+startDate.getTime());
-        Label endDateLabel = new Label("The mission ends at: "+endDate.getTime());
+        Label globalPriotet = new Label("This mision has priority: "+temp.getRank());
+        Label startDayLabel = new Label("The mission begins at: "+temp.getStartTime().getTime());
+        Label endDateLabel = new Label("The mission ends at: "+temp.getEndTime().getTime());
        // Label globalQuality = new Label("of "+TotalRank);
         Net.setVgap(20);
         Net.setHgap(20);
@@ -384,6 +389,10 @@ public class GUI2 extends Application {
         TreeItem<String> root;        
         root = new TreeItem<>();
         root.setExpanded(true);
+        BorderPane pane = new BorderPane();
+        TextField textComType = new TextField();
+        textComType.setPromptText("Search for comunication type");
+        textComType.setMaxWidth(220);
         ListOfInterfaceArea = new ArrayList<>();        
         makeTreeAreaInterface(root);
       
@@ -394,8 +403,9 @@ public class GUI2 extends Application {
         TreeView tree = new TreeView<>(root);
         tree.setShowRoot(false);
         tree.getSelectionModel().selectedItemProperty().addListener((v,oldvalue,newvalue) -> {Contolloer.newTabInterface(newvalue);});         
-        
-    Interface.setContent(tree);
+        pane.setTop(textComType);
+        pane.setCenter(tree);
+    Interface.setContent(pane);
 }
   
   public void NodeTabScreen(ArrayList<TSN> noder){
@@ -404,6 +414,10 @@ public class GUI2 extends Application {
         
         root = new TreeItem<>();
         root.setExpanded(true);
+        BorderPane pane = new BorderPane();
+        TextField searchNode = new TextField();
+        searchNode.setPromptText("Search for node");
+        searchNode.setMaxWidth(150);
         ListOfNodesArea = new ArrayList<>();
         makeTreeAreaNode(root);
        
@@ -413,9 +427,11 @@ public class GUI2 extends Application {
         
         TreeView tree = new TreeView<>(root);
         tree.setShowRoot(false);
-        tree.getSelectionModel().selectedItemProperty().addListener((v,oldvalue,newvalue) -> {Contolloer.newTabNode(newvalue);});      
-       
-    Nodes.setContent(tree);
+        tree.getSelectionModel().selectedItemProperty().addListener((v,oldvalue,newvalue) -> {Contolloer.newTabNode(newvalue);}); 
+        
+       pane.setTop(searchNode);
+       pane.setCenter(tree);
+    Nodes.setContent(pane);
 }
 
   public TreeItem<String> makeBrach(String titel,TreeItem<String> parent){
@@ -470,7 +486,7 @@ public class GUI2 extends Application {
         DatePicer = new DatePicker(DateToPresent);
         DatePicer.setShowWeekNumbers(true);
         
-        Tooltip tooltip = new Tooltip("Choose day, to see the missions belonging to that day");
+        Tooltip tooltip = new Tooltip("Choose day, to see the missions that belongings to that day");
         tooltip.setWrapText(true);
         DatePicer.setTooltip(tooltip);
         
@@ -564,7 +580,7 @@ public class GUI2 extends Application {
  
  
         TableColumn InfoColumn = new TableColumn("Mission info");
-        InfoColumn.setMinWidth(100);
+        InfoColumn.setMinWidth(200);
         InfoColumn.setCellValueFactory(
             new PropertyValueFactory<Task, String>("info"));
       
@@ -637,7 +653,7 @@ public class GUI2 extends Application {
 
   public void P_2_PScreen(ArrayList<String> Nodes,ArrayList<String> inters){
      
-      
+     
       ObservableList<String> levels = FXCollections.observableArrayList();
       for (int i = 1; i < priorityAndQulaityLevels.values().length+1; i++) {
           levels.add(priorityAndQulaityLevels.getTypes(i).toString());
@@ -649,27 +665,80 @@ public class GUI2 extends Application {
       Label nod1 = new Label("Node 1");
       Label nod2 = new Label("Node 2");
       Label comType = new Label("Com type");
-     final TextField textnode1 = new TextField();
-      textnode1.setPromptText("Node 1");
-      new Auto(Nodes, textnode1,this);      
-    final TextField textnode2 = new TextField();      
-      textnode2.setPromptText("Node 2");
-      new Auto(Nodes, textnode2,this);
-    final TextField textComType = new TextField();
-      textComType.setPromptText("Comunication type");
-      new Auto(inters, textComType,this);
+      
+      // text.setMouseTransparent(true);
+      // text.setFocusTraversable(false);
+      ///Search window for node 1
+      textnode1P2P = new TextField();
+      textnode1P2P.setPromptText("Node 1");
+      new Auto(Nodes, textnode1P2P);  
+      textnode1P2P.setOnAction(new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+              lockUpNode2 = true;
+              textnode2P2P.setMouseTransparent(false);
+              textnode2P2P.setFocusTraversable(true);
+              System.out.println("Hello");
+          }
+      });      
+      
+      // Search window for node 2
+      textnode2P2P = new TextField();      
+      textnode2P2P.setPromptText("Node 2");
+      new Auto(Nodes, textnode2P2P);
+      textnode2P2P.setFocusTraversable(false);
+      textnode2P2P.setMouseTransparent(true);
+      textnode2P2P.setOnAction(new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+              textComTypeP2P.setMouseTransparent(false);
+              textComTypeP2P.setFocusTraversable(true);
+          }
+      });
+      
+      // Search window for com type
+      textComTypeP2P = new TextField();
+      textComTypeP2P.setPromptText("Comunication type");
+      new Auto(inters, textComTypeP2P);
+      textComTypeP2P.setFocusTraversable(false);
+      textComTypeP2P.setMouseTransparent(true);
+      
+      
+      
+      //Combobox for Priority
      final ComboBox<String> priBox = new ComboBox<>(levels);
      priBox.setPromptText("Priority");
+     priBox.setMouseTransparent(true);
+    
+     // Combobox for quality
     final ComboBox<String> QualbBox = new ComboBox<>(levels);
       QualbBox.setPromptText("Quality");
+      QualbBox.setMouseTransparent(true);
+      
+      textComTypeP2P.setOnAction(new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+              priBox.setMouseTransparent(false);
+          }
+      });
+      
+       priBox.setOnAction(new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+              QualbBox.setMouseTransparent(false);
+          }
+      });
+       
+       
+      // Ok button 
       okButton = new Button("Ok");
       //okButton.addEventHandler(ActionEvent.ACTION, new P_2_PButtonChice(){});
        //tree.getSelectionModel().selectedItemProperty().addListener((v,oldvalue,newvalue) -> {Contolloer.newTabNode(newvalue);}); 
        okButton.setOnAction(new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent event) {
-              if (priBox.getValue() != null && QualbBox.getValue() != null && !textnode1.getText().trim().isEmpty() && !textnode2.getText().trim().isEmpty() && !textComType.getText().trim().isEmpty()) {
-                  Contolloer.setNodesAndComTypeForP_2_P(textnode1.getText(),textnode2.getText(),textComType.getText(),priBox.getValue(),QualbBox.getValue());
+              if (priBox.getValue() != null && QualbBox.getValue() != null && !textnode1P2P.getText().trim().isEmpty() && !textnode2P2P.getText().trim().isEmpty() && !textComTypeP2P.getText().trim().isEmpty()) {
+                  Contolloer.setNodesAndComTypeForP_2_P(textnode1P2P.getText(),textnode2P2P.getText(),textComTypeP2P.getText(),priBox.getValue(),QualbBox.getValue());
                   tabPane.getTabs().remove(tabP_2_P);
               }
           }
@@ -681,29 +750,29 @@ public class GUI2 extends Application {
       /////Tooltips
       Tooltip tip1 = new Tooltip("Type the first two letters in the text field and choose the desired first node");
       tip1.setWrapText(true);
-      textnode1.setTooltip(tip1);
+      textnode1P2P.setTooltip(tip1);
       nod1.setTooltip(tip1);
       
       Tooltip tip2 = new Tooltip("Type the first two letters in the text field and choose the desired secend node");
       tip2.setWrapText(true);
-      textnode2.setTooltip(tip2);
+      textnode2P2P.setTooltip(tip2);
       nod2.setTooltip(tip2);
       
       Tooltip tip3 = new Tooltip("Type the first two letters in the text field and choose the desired communication type");
       tip3.setWrapText(true);
-      textComType.setTooltip(tip3);
+      textComTypeP2P.setTooltip(tip3);
       comType.setTooltip(tip3);
       
       //////Node 1
       pnet.add(nod1, 1, 1);
-      pnet.add(textnode1, 2, 1);
+      pnet.add(textnode1P2P, 2, 1);
       
       ///Node 2
       pnet.add(nod2, 1, 2);
-      pnet.add(textnode2, 2, 2);
+      pnet.add(textnode2P2P, 2, 2);
       
       ///Comunication type
-      pnet.add(textComType, 2, 3);
+      pnet.add(textComTypeP2P, 2, 3);
       pnet.add(comType, 1, 3);
       
       ///ChoiceBox
@@ -757,9 +826,13 @@ public class GUI2 extends Application {
      QulBox.setValue(quality);
       TextArea text = new TextArea(info);
        text.setMaxWidth(150);
-       text.setMaxHeight(110);
+       text.setMinHeight(130);
        text.setPrefColumnCount(10);
        text.setWrapText(true);
+       text.setMouseTransparent(true);
+       text.setFocusTraversable(false);
+        
+        
        Button okButton = new Button("Ok");
        okButton.setOnAction(new EventHandler<ActionEvent>() {
           @Override
@@ -802,11 +875,22 @@ public class GUI2 extends Application {
       netPane.add(QulBox, 3, 2);
       
       //ok button
-       netPane.add(okButton, 7, 4);
+       netPane.add(okButton, 7, 2);
       tab.setContent(netPane);
               
       tabPane.getTabs().add(tab);
   }
+
+    private static class EventHandlerImpl implements EventHandler<KeyEvent> {
+
+        public EventHandlerImpl() {
+        }
+
+        @Override
+        public void handle(KeyEvent event) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+    }
     
     
 }
