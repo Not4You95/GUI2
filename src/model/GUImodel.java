@@ -31,13 +31,15 @@ public class GUImodel {
     private Orginasation OrgTemp;
     private Task taskTemp = null; 
     private LocalDate dayOfMission;
+    private guiControler contoller;
     
     
     
     
-    public GUImodel(){
+    public GUImodel(guiControler input){
         Org = new ArrayList<Orginasation>();
         Tasks = new ArrayList<Task>();
+        contoller = input;
        
         filename = new File("test.txt");       
     }
@@ -45,7 +47,16 @@ public class GUImodel {
     public void setDayOfMission(LocalDate date){
      dayOfMission = date;        //
         
-    }    
+    }
+public boolean isAMissionChosen(){
+    if (taskTemp != null) {
+        return true;
+    }
+    else{
+       
+        return false;
+    }
+}
     
     public ArrayList<String> GetTaskNames(){
         ArrayList<String> temp = new ArrayList<String>();
@@ -134,8 +145,13 @@ public class GUImodel {
     
     public ArrayList<String> getNodesOfTypeString(){
         ArrayList<String> temp = new ArrayList<>();
-        for (int i = 0; i < taskTemp.getNoder().size(); i++) {
+        if (taskTemp != null) {
+             for (int i = 0; i < taskTemp.getNoder().size(); i++) {
             temp.add(taskTemp.getNoder().get(i).getName());
+        }
+        }
+        else{
+            contoller.setWaringForUser("Select mission", "Can not find desierd mission", "Warrning");
         }
         return temp;
     }
@@ -148,6 +164,9 @@ public class GUImodel {
             }
         }
         }
+        else{
+            contoller.setWaringForUser("Select mission", "Can not find desierd mission", "Warrning");
+        }
         return null;
     }
     
@@ -157,13 +176,15 @@ public class GUImodel {
              Itemp.addAll(getInterfacesTypes());
              
             
-             for (int i = 0; i < Itemp.size(); i++) {
-                 System.out.println("Name: "+Itemp.get(i).getName());
-                 System.out.println("Name: "+name.toLowerCase().contains(Itemp.get(i).getName().toLowerCase()));
+             for (int i = 0; i < Itemp.size(); i++) {               
                  if (name.toLowerCase().contains(Itemp.get(i).getName().toLowerCase())) {
                      return Itemp.get(i);
                  }
             }
+        }
+        else
+        {
+            contoller.setWaringForUser("Select mission", "Can not find desierd mission", "Warrning");
         }
         return null;
 }
@@ -171,13 +192,19 @@ public class GUImodel {
     public ArrayList<Interface> getInterfacesTypes(){
          ArrayList<Interface> temp = new ArrayList<>();
         ArrayList<Interface> Itemp = new ArrayList<>();
-        Itemp.addAll(taskTemp.getInterfaces());
+        if (taskTemp != null) {
+            Itemp.addAll(taskTemp.getInterfaces());
         for (int i = 0; i < Itemp.size(); i++) {
            // temp.add(Itemp.get(i).getName());           
                 if (!temp.contains(Itemp.get(i))) {
                 temp.add(Itemp.get(i));
             }
             
+        }       
+            
+        }
+        else{
+            contoller.setWaringForUser("Select mission", "Can not find desierd mission", "Warrning");
         }
         return temp;
     }          
@@ -185,13 +212,18 @@ public class GUImodel {
     public ArrayList<String> getInterfacesOfTypeStrings(){
         ArrayList<String> temp = new ArrayList<>();
         ArrayList<Interface> Itemp = new ArrayList<>();
-        Itemp.addAll(taskTemp.getInterfaces());
+        if (taskTemp != null) {
+             Itemp.addAll(taskTemp.getInterfaces());
         for (int i = 0; i < Itemp.size(); i++) {
            // temp.add(Itemp.get(i).getName());           
                 if (!temp.contains(Itemp.get(i).getName())) {
                 temp.add(Itemp.get(i).getName());
             }
             
+        }
+        }
+        else{
+            contoller.setWaringForUser("Select mission", "Can not find desierd mission", "Warrning");
         }
         return temp;
     }
@@ -231,13 +263,13 @@ public class GUImodel {
         Task task5 = new Task("Defend Musköbasen", "Defend Musköbasen from beeing ocupied", "Amfibiebataljonen");
         ArrayList<Task> taskList = new ArrayList<Task>();      
        
-       Interface in1 = new Interface("BFT",InterfaceTypes.Tracking);
-       Interface in2 = new Interface("COP", InterfaceTypes.Video);
-       Interface in3 = new Interface("Voice", InterfaceTypes.Voice);
-       Interface in4 = new Interface("ISR", InterfaceTypes.Mesagge);
-       Interface in5  =new Interface("Video",  InterfaceTypes.Video);
-       Interface in6 = new Interface("Msg", InterfaceTypes.Mesagge);
-       Interface in7 = new Interface("Contol", InterfaceTypes.Mesagge);
+       Interface in1 = new Interface("BFT",InterfaceTypes.Tracking_Types);
+       Interface in2 = new Interface("COP", InterfaceTypes.Video_Typs);
+       Interface in3 = new Interface("Voice", InterfaceTypes.Voice_Typs);
+       Interface in4 = new Interface("ISR", InterfaceTypes.Message_Types);
+       Interface in5  =new Interface("Video",  InterfaceTypes.Video_Typs);
+       Interface in6 = new Interface("Msg", InterfaceTypes.Message_Types);
+       Interface in7 = new Interface("Contol", InterfaceTypes.Message_Types);
        
        
        
@@ -364,6 +396,8 @@ public class GUImodel {
         task5.setListOfNodesErros(five);
         task5.setListOfNodesErros(six);
         
+        
+        
         temp.add(one);
         temp.add(two);
         temp.add(three);
@@ -384,6 +418,8 @@ public class GUImodel {
         Tasks.add(task3);
         Tasks.add(task4);
         Tasks.add(task5);
+        
+          System.out.println("Test: "+task.getPercentOfWorkingsNodes());
         
         /////////////////////////////////////////////////////
       

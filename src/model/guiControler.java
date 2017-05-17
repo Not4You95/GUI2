@@ -25,7 +25,7 @@ public class guiControler {
     
     public guiControler(GUI2 GUICLASS){
         gui = GUICLASS; 
-        model = new GUImodel();
+        model = new GUImodel(this);
         model.test();
         tempTask = new ArrayList<String>();
         NodesAndComType = new ArrayList<>();
@@ -33,11 +33,7 @@ public class guiControler {
         
     }
     
-    public void SetGroup(){
-        
-        
-        
-    }
+   
     
     public void SetDate(LocalDate date){
         System.out.println("Contoler: "+date.toString());
@@ -50,6 +46,10 @@ public class guiControler {
              model.SetTempTask(DesierdTask);
             upDateTabs();
         }
+    }
+    
+    public void setDesierdTask(String name){
+        model.SetTempTask(name);
     }
     
     public void upDateTabs(){
@@ -101,14 +101,16 @@ public class guiControler {
             ArrayList<String> temp = new ArrayList<String>(); 
             temp.addAll(model.GetTaskNames());
             model.setDayOfMission(LocalDate.now());
-            gui.SetScreenForLiveMode(model.getTaskList());
-            //gui.UppdateListOfTask(temp);             
-            System.out.println("Hello");
+            gui.SetScreenForLiveAndSimulateMode(model.getTaskList(),false);
+           
               
             
         }
         else if(Simulate){
-            
+            ArrayList<String> temp = new ArrayList<String>(); 
+            temp.addAll(model.GetTaskNames());
+            model.setDayOfMission(LocalDate.now());
+            gui.SetScreenForLiveAndSimulateMode(model.getTaskList(),true);
         }
         
        // tempTask.add("Test");
@@ -119,8 +121,17 @@ public class guiControler {
     }
     
     public void updateP_2_P(){
-          gui.P_2_PScreen(model.getNodesOfTypeString(),model.getInterfacesOfTypeStrings());
-      }    
+         if (model.isAMissionChosen()) {
+             gui.P_2_PScreen(model.getNodesOfTypeString(),model.getInterfacesOfTypeStrings());
+        }
+         else{
+             setWaringForUser("Select mission", "Can not find desierd mission", "Warrning");
+         }
+      } 
+    
+    public void setWaringForUser(String info, String head, String titel){
+        gui.AlertToUser(info, head, titel);
+    }
     
     
     public void choiseOfInterfaceLiveMode(Object intName,String Mission){

@@ -22,7 +22,9 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
@@ -43,11 +45,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -79,7 +83,7 @@ public class GUI2 extends Application {
    private guiControler Contolloer;
    private Menu P_2_P_Menu,ModeMenu;   
    private CheckMenuItem Plan,Live;
-   private HBox TopLine,TopLineLine2,CenterHBox;
+   private HBox TopLine,CenterHBox;
    private VBox ToplineVBox,CentetVBox;
    private MenuBar menulist;
    private GridPane Net;
@@ -100,13 +104,13 @@ public class GUI2 extends Application {
         root = new BorderPane();
         tabPane = new TabPane();
         border = new GridPane();
-        TopLine = new HBox(20);
-        TopLineLine2 = new HBox();
+        TopLine = new HBox(20);       
         ToplineVBox = new VBox();
         Contolloer.setScreen();        
         Live.setSelected(false);       
         menulist = new MenuBar();
         BackButton = new Button("Back");
+        BackButton.setStyle("-fx-background-color: #ccccb3");
         DateToPresent = LocalDate.now();
         ///////////////////////////////////////////////////////////////////////
         BackButton.addEventFilter(ActionEvent.ACTION, new BackButton());
@@ -160,21 +164,11 @@ public class GUI2 extends Application {
 }     
 
   public void SetColor(){
-    TopLine.setStyle("-fx-background-color: #ccccb3");
-    TopLineLine2.setStyle("-fx-background-color: #ccccb3");
+    TopLine.setStyle("-fx-background-color: #ccccb3");   
     menulist.setStyle("-fx-background-color: #ccccb3");
     ToplineVBox.setStyle("-fx-background-color: #ccccb3");
 
-} 
-
-  private class OpenInderface implements EventHandler<ActionEvent>{
-
-       
-        @Override
-        public void handle(ActionEvent event) {
-          Contolloer.newTabInterface(event.getSource());
-        }
-    }
+}   
 
   private class ChoiseOfDate implements EventHandler<ActionEvent>{
 
@@ -190,7 +184,6 @@ public class GUI2 extends Application {
    
   private class BackButton implements EventHandler<ActionEvent>{
 
-       
         @Override
         public void handle(ActionEvent event) {
             if (event.getSource() == BackButton) {
@@ -287,20 +280,40 @@ public class GUI2 extends Application {
         root = new TreeItem<>();
         root.setExpanded(true);
         BorderPane pane = new BorderPane();
-        TextField textComType = new TextField();
+       ArrayList<String> temp = new ArrayList<>();
+       
+       for (int i = 0; i < noder.size(); i++) {
+          temp.add(noder.get(i).getName());
+      }
+       
+        
+      final  TextField textComType = new TextField();
         textComType.setPromptText("Search for comunication type");
         textComType.setMaxWidth(220);
+        new Auto(temp, textComType);
+        
+        Button okBut = new Button("Ok");
+        okBut.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                Contolloer.newTabInterface((Object) textComType.getText());
+            }
+            
+        });
+        
         ListOfInterfaceArea = new ArrayList<>();        
         makeTreeAreaInterface(root);
       
         for (int i = 0; i < noder.size(); i++) {
             makeTreeInterfaceSubArea(noder.get(i));
         }
-        
+        HBox box = new HBox();
+        box.getChildren().addAll(textComType,okBut);
+        box.setSpacing(10);
         TreeView tree = new TreeView<>(root);
         tree.setShowRoot(false);
         tree.getSelectionModel().selectedItemProperty().addListener((v,oldvalue,newvalue) -> {Contolloer.newTabInterface(newvalue);});         
-        pane.setTop(textComType);
+        pane.setTop(box);
         pane.setCenter(tree);
     Interface.setContent(pane);
 }
@@ -312,9 +325,25 @@ public class GUI2 extends Application {
         root = new TreeItem<>();
         root.setExpanded(true);
         BorderPane pane = new BorderPane();
-        TextField searchNode = new TextField();
+        ArrayList<String> temp = new ArrayList<>();
+        
+        for (int i = 0; i < noder.size(); i++) {
+            temp.add(noder.get(i).getName());
+      }
+        
+       final TextField searchNode = new TextField();
         searchNode.setPromptText("Search for node");
         searchNode.setMaxWidth(150);
+        new Auto(temp, searchNode);
+        
+        Button okBut = new Button("Ok");
+        okBut.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Contolloer.newTabNode((Object) searchNode.getText());
+            }
+        });
+        
         ListOfNodesArea = new ArrayList<>();
         makeTreeAreaNode(root);
        
@@ -326,7 +355,11 @@ public class GUI2 extends Application {
         tree.setShowRoot(false);
         tree.getSelectionModel().selectedItemProperty().addListener((v,oldvalue,newvalue) -> {Contolloer.newTabNode(newvalue);}); 
         
-       pane.setTop(searchNode);
+        HBox box = new HBox();
+        box.setSpacing(10);
+        box.getChildren().addAll(searchNode,okBut);
+        
+       pane.setTop(box);
        pane.setCenter(tree);
     Nodes.setContent(pane);
 }
@@ -376,42 +409,27 @@ public class GUI2 extends Application {
   
   public void topLineForPlanmode(){
      
-      TopLineLine2 = new HBox();      
-      TopLineLine2.setSpacing(20);
+     
       menulist.getMenus().remove(P_2_P_Menu);
       //////Time Choise/////////////////////
         dateFormatter = DateTimeFormatter.ofPattern(pattern);
         DatePicer = new DatePicker(DateToPresent);
         DatePicer.setShowWeekNumbers(true);
+        Button SimulateButton = new Button("Simulate");
+        //"-fx-base: #ccccb3"
+        SimulateButton.setStyle("-fx-background-color: #ccccb3");
+        SimulateButton.setOnAction(new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+              Contolloer.modeState(false, false, true);
+          }
+      });
+        
         
         Tooltip tooltip = new Tooltip("Choose day, to see the missions that belongings to that day");
         tooltip.setWrapText(true);
         DatePicer.setTooltip(tooltip);
         
-        /*StringConverter converter = new StringConverter<LocalDate>(){
-            @Override
-            public String toString(LocalDate object) {
-                if (object != null) {
-                    return dateFormatter.format(object);
-                }
-                else{
-                    return "";
-                }
-            }
-
-            @Override
-            public LocalDate fromString(String string) {
-                if (string != null && !string.isEmpty()) {
-                    return LocalDate.parse(string, dateFormatter);
-                }
-                else{
-                    return null;
-                }
-            }
-            
-        };*/
-         
-    
        
         
         DatePicer.setPromptText(pattern.toLowerCase());
@@ -421,9 +439,10 @@ public class GUI2 extends Application {
         DatePicer.addEventHandler(ActionEvent.ACTION, new ChoiseOfDate());
         //tree.getSelectionModel().selectedItemProperty().addListener((v,oldvalue,newvalue) -> {Contolloer.newTabInterface(newvalue);});
         Label label = new Label("Date of mision");
-        TopLineLine2.getChildren().addAll(label,DatePicer,menulist);
+        TopLine.getChildren().addAll(label,DatePicer,menulist,SimulateButton);
+       
         
-        ToplineVBox.getChildren().add(TopLineLine2);
+        ToplineVBox.getChildren().add(TopLine);
         root.setTop(ToplineVBox);
         DatePicer.requestFocus();
         
@@ -437,40 +456,72 @@ public class GUI2 extends Application {
         TopLine.getChildren().clear();
         TopLine.setSpacing(20);        
         TopLine.getChildren().addAll(BackButton,menulist);
-        ToplineVBox.getChildren().clear();
-        TopLineLine2.getChildren().clear();       
-        TopLineLine2.setSpacing(20);
+        ToplineVBox.getChildren().clear();       
         ToplineVBox.setSpacing(5);
        
                
                
-       ToplineVBox.getChildren().addAll(TopLine,TopLineLine2);
+       ToplineVBox.getChildren().addAll(TopLine);
        
        root.setTop(ToplineVBox);
   }
   
-  public void SetScreenForLiveMode(ObservableList<Task> Tasks){
+  public void SetScreenForLiveAndSimulateMode(ObservableList<Task> Tasks,boolean Simultate){
       menulist.getMenus().remove(P_2_P_Menu);
-      menulist.getMenus().add(P_2_P_Menu);
+      if (!Simultate) menulist.getMenus().add(P_2_P_Menu);
       ToplineVBox.getChildren().clear();    
       tabPane.getTabs().clear();
-      ToplineVBox.getChildren().addAll(menulist);    
+      TopLine.getChildren().clear();;
+      TopLine.getChildren().addAll(BackButton,menulist);
+      ToplineVBox.getChildren().add(TopLine);    
       
       tabLiveMode = new Tab("Live");
       tabPane.getTabs().clear();
+     
       
       TableView<Task> table = new TableView();
       table.setEditable(true);
+      
+      //
+      TableColumn checkBox = new TableColumn("Select");
+      checkBox.setMaxWidth(50);
+      checkBox.setCellFactory(new Callback<TableColumn<Task,String>,TableCell<Task,String>>(){
+          @Override
+          public TableCell<Task, String> call(TableColumn<Task, String> param) {
+             return new TableCell<Task,String>(){
+                  @Override public void updateItem(String string,boolean  isEmpty){
+                    super.updateItem(string, isEmpty);
+                     if (!isEmpty) {
+                        final CheckBox check = new CheckBox();
+                         setGraphic(check);
+                         check.setOnAction(new EventHandler<ActionEvent>() {
+                             @Override
+                             public void handle(ActionEvent event) {
+                                 //getTableView().getItems().get(getTableRow().getIndex())
+                                 Contolloer.setDesierdTask(getTableView().getItems().get(getTableRow().getIndex()).getName());
+                                
+                                 
+                             }
+                         });
+                     }
+                     }
+             };
+          }
+         
+      });
+         
+      
+      
       // Colum 1 Mission
       TableColumn misionColumn = new TableColumn("Mission");
-        misionColumn.setMinWidth(200);
+        misionColumn.setMaxWidth(100);
         misionColumn.setCellValueFactory(
             new PropertyValueFactory<Task, String>("Name")); 
            
         
       // Colum 2 info
       TableColumn<Task,String> InfoColumn = new TableColumn("Info");
-        InfoColumn.setMinWidth(230);
+        InfoColumn.setMinWidth(150);
         InfoColumn.setCellValueFactory(new PropertyValueFactory<Task, String>("info"));
         InfoColumn.setCellFactory(new Callback<TableColumn<Task,String>,TableCell<Task,String>>(){
            @Override
@@ -491,9 +542,27 @@ public class GUI2 extends Application {
             
         });
         
-     
-        
-        
+        TableColumn NrOfWorkingNode = new TableColumn("Operating nodes");
+        NrOfWorkingNode.setMaxWidth(150);
+        NrOfWorkingNode.setCellValueFactory(new PropertyValueFactory<Task, Integer>("percentOfWorkingsNodes"));
+        NrOfWorkingNode.setCellFactory(new Callback<TableColumn<Task,Integer>,TableCell<Task,Integer>>(){
+          @Override
+          public TableCell<Task, Integer> call(TableColumn<Task, Integer> param) {
+             return  new TextFieldTableCell<Task,Integer>(){
+               @Override public void updateItem(Integer value,boolean  isEmpty){                  
+                           // int temp = getTableView().getItems().get(getTableRow().getIndex()).getPercentOfWorkingsNodes();
+                          if (!isEmpty) {
+                            String text = value+"%";
+                            setText(text);
+                   }
+             };
+          };
+          }
+         
+          
+            
+        });
+       
         //Colum 4 Error for 
         TableColumn NodeErros = new TableColumn("Nodes with Error");
         NodeErros.setMinWidth(200);
@@ -505,12 +574,12 @@ public class GUI2 extends Application {
                     @Override
                     public void updateItem(String item, boolean empty) {
                         if(item!=null){
-                          final  ObservableList<String> temp = FXCollections.observableArrayList();
+                           ObservableList<String> temp = FXCollections.observableArrayList();
                           ObservableList<TSN> temp2 = FXCollections.observableArrayList();
                           temp2.addAll(getTableView().getItems().get(getTableRow().getIndex()).getListOfNodesErros());
                            
                             Menu m0 = new Menu("Nodes");
-                            m0.setStyle(getStyle());
+                            m0.setStyle(getTableRow().getStyle());
                             
                              if (temp2.size() != 0) {
                                 
@@ -518,12 +587,22 @@ public class GUI2 extends Application {
                                
                                 temp.add(temp2.get(i).getName());
                                 Menu mTemp = new Menu(temp2.get(i).getName());
-                                m0.getItems().add(mTemp);                                   
+                                m0.getItems().add(mTemp);  
+                                
+                               
                                 
                                 for (int j = 0; j < temp2.get(i).getListOfInterfasErros().size(); j++) {
                                    MenuItem tempc = new MenuItem(temp2.get(i).getListOfInterfasErros().get(j).getName());
                                     mTemp.getItems().add(tempc);
-                                    tempc.addEventHandler(ActionEvent.ANY, new OpenInderface());
+                                    final String missionTemp = getTableView().getItems().get(getTableRow().getIndex()).getName();
+                                    final String nameTemp = temp2.get(i).getListOfInterfasErros().get(j).getName();
+                                    tempc.setOnAction(new EventHandler<ActionEvent>() {
+                                       @Override
+                                       public void handle(ActionEvent event) {
+                                          Contolloer.choiseOfInterfaceLiveMode(nameTemp, missionTemp);
+                                       }
+                                   });
+                                   // tempc.addEventHandler(ActionEvent.ANY, new OpenInderface(new Object(), "Test"));
                                     
                                 
                                 }
@@ -532,9 +611,10 @@ public class GUI2 extends Application {
                             
                            
                            MenuBar mb = new MenuBar(m0);
+                           mb.setStyle(getTableRow().getStyle());
                            mb.setMaxWidth(90);
                            //mb.setStyle(getTableView().getColumns().get(2).getStyle());
-                           
+                        
                            
                            setGraphic(mb);
                            Tooltip tip = new Tooltip();
@@ -551,19 +631,16 @@ public class GUI2 extends Application {
            }
        });
         
-       NodeErros.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Task,String>>() {
-          @Override
-          public void handle(TableColumn.CellEditEvent<Task, String> event) {
-              /*((Task) t.getTableView().getItems().get(
-                        t.getTablePosition().getRow())
-                        ).setRank(t.getNewValue());*/
-              
-          }
-           
-        });
+       
        
         table.setItems(Tasks);
-        table.getColumns().addAll(misionColumn,InfoColumn,NodeErros);
+        if (Simultate) {
+          table.getColumns().addAll(misionColumn,InfoColumn,NrOfWorkingNode,NodeErros);
+      }
+        else{
+            table.getColumns().addAll(checkBox,misionColumn,InfoColumn,NrOfWorkingNode,NodeErros);
+        }
+                
         tabLiveMode.setContent(table);
         tabLiveMode.setClosable(false);
         
@@ -662,8 +739,7 @@ public class GUI2 extends Application {
       
   }
 
-  public void P_2_PScreen(ArrayList<String> Nodes,ArrayList<String> inters){
-     
+  public void P_2_PScreen(ArrayList<String> Nodes,ArrayList<String> inters){    
      
       ObservableList<String> levels = FXCollections.observableArrayList();
       for (int i = 1; i < priorityAndQulaityLevels.values().length+1; i++) {
@@ -698,8 +774,7 @@ public class GUI2 extends Application {
           public void handle(ActionEvent event) {
              
               textnode2P2P.setMouseTransparent(false);
-              textnode2P2P.setFocusTraversable(true);
-              System.out.println("Hello");
+              textnode2P2P.setFocusTraversable(true);             
           }
       });  
       // Search window for com type
@@ -822,8 +897,7 @@ public class GUI2 extends Application {
           image = itemp.getImage();
       }
       
-      System.out.println("Priority: "+priority);
-      System.out.println("Quality: "+quality);
+     
      final Tab tab = new Tab(name);
       ObservableList<String> levels = FXCollections.observableArrayList();
       
@@ -831,7 +905,10 @@ public class GUI2 extends Application {
       for (int i = 1; i < priorityAndQulaityLevels.values().length+1; i++) {
           levels.add(priorityAndQulaityLevels.getTypes(i).toString());
       }
-      GridPane netPane = new GridPane();
+      
+      BorderPane pane = new BorderPane();
+      GridPane CenterPane = new GridPane();
+      GridPane LeftPane = new GridPane();
       Label PriLabel = new Label("Priority: ");
       Label QuaLabel = new Label("Quality: ");
       Label infoLabel = new Label("Information");
@@ -856,7 +933,7 @@ public class GUI2 extends Application {
        okButton.setOnAction(new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent event) {
-              if (PriBox.getValue() != null && QulBox.getValue() != null ) {
+              if (PriBox.getValue() != null ) {
                   if (temp != null) {
                       temp.setPriority(priorityAndQulaityLevels.getTypes(PriBox.getSelectionModel().getSelectedIndex()+1));
                       temp.setQuality(priorityAndQulaityLevels.getTypes(QulBox.getSelectionModel().getSelectedIndex()+1));
@@ -874,6 +951,11 @@ public class GUI2 extends Application {
       });
        
        
+       //Center pane
+       
+       //LeftPane
+       
+       
       //ImageView Image = new ImageView();
       ImageView imageView = new ImageView();
       imageView.setImage(image);
@@ -883,30 +965,40 @@ public class GUI2 extends Application {
       imageView.setCache(true);
       
       
-      netPane.setVgap(5);
-      netPane.setHgap(20);
+     
       
       //Image
-      netPane.add(imageView, 1, 1);
+      LeftPane.add(imageView, 1, 1);
       
       //TextArea
-      netPane.add(infoLabel, 1, 2);
-      netPane.add(text, 1, 3);
+      LeftPane.add(infoLabel, 1, 2);
+      LeftPane.add(text, 1, 3);
       
       //ChoiceBox
-      netPane.add(PriLabel, 2, 1);
-      netPane.add(PriBox, 2, 2);
-      netPane.add(QuaLabel, 3, 1);
-      netPane.add(QulBox, 3, 2);
+      CenterPane.add(PriLabel, 2, 2);
+      CenterPane.add(PriBox, 3, 2);
+      if (itemp != null) {
+      CenterPane.add(QuaLabel, 2, 3);
+      CenterPane.add(QulBox, 3, 3);
+      }
+     
       
       //ok button
-       netPane.add(okButton, 7, 3);
-      tab.setContent(netPane);
+       CenterPane.add(okButton, 7, 3);
+       pane.setLeft(LeftPane);
+       pane.setCenter(CenterPane);
+      tab.setContent(pane);
               
       tabPane.getTabs().add(tab);
   }    
     
-    
+  public void AlertToUser(String info, String head, String titel){
+      Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setHeaderText(head);
+        alert.setTitle(titel);
+        alert.setContentText(info);
+        alert.show();
+  }
 }
 
   

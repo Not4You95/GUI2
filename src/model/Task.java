@@ -32,6 +32,7 @@ public class Task implements Serializable{
      private Calendar EndTime ;    
      private ObservableList<TSN> listOfNodesErros;       
      private SimpleStringProperty ErrorNodeName = new SimpleStringProperty();
+     private IntegerProperty percentOfWorkingsNodes = new SimpleIntegerProperty();
   
      
      
@@ -211,6 +212,23 @@ public class Task implements Serializable{
     public void setErrorNodeName(String ErrorNodeName) {
         this.ErrorNodeName.set(ErrorNodeName);
         
+    }
+
+    /**
+     * @return the percentOfWorkingsNodes
+     */
+    public Integer getPercentOfWorkingsNodes() {
+        int temp = 100-(listOfNodesErros.size()*100)/(noder.size());
+        setPercentOfWorkingsNodes(temp);
+       
+        return percentOfWorkingsNodes.get();
+    }
+
+    /**
+     * @param percentOfWorkingsNodes the percentOfWorkingsNodes to set
+     */
+    public void setPercentOfWorkingsNodes(Integer percentOfWorkingsNodes) {
+        this.percentOfWorkingsNodes.set(percentOfWorkingsNodes);
     }
   
   

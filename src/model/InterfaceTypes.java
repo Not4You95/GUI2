@@ -14,7 +14,7 @@ import javax.sound.midi.VoiceStatus;
  */
 public enum InterfaceTypes {
    
-        Tracking(1), Video(2), Voice(3), Mesagge(4);
+        Tracking_Types(1), Video_Typs(2), Voice_Typs(3), Message_Types(4);
     
     int Value= 0;
     

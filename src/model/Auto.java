@@ -50,19 +50,19 @@ public class Auto {
        currentParentField = (TextField)target;
        EventType<? extends Event> type = e.getEventType();
        KeyCode code = e.getCode();
-       System.out.println(e.getCode().toString());
+       
        
         
         if (code == KeyCode.ESCAPE) {
 			filter = "";
-                        System.out.println("Hello escape");
+                        
 		}
         if (code == KeyCode.BACK_SPACE && filter.length()>0) {
             filter = filter.substring(0, filter.length()-1);
         }
          if (code.isLetterKey()) {
                 filter += e.getText();
-                System.out.println("Filter: "+filter.toString());
+             
            }
          
         if (filter.length() == 0) {
@@ -74,7 +74,7 @@ public class Auto {
             popup.hide();
            Stream<MenuItem> items = ListOfMenuItems.stream();
            String textUsr = filter.toString().toLowerCase();
-            System.out.println("TextUsr: "+textUsr);
+            
              popup.getItems().clear();
             for (int i = 0; i <ListOfStrings.size(); i++) {
                 if (ListOfStrings.get(i).toLowerCase().contains(textUsr)) {
