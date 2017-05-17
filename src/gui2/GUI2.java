@@ -18,6 +18,7 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -165,6 +166,15 @@ public class GUI2 extends Application {
     ToplineVBox.setStyle("-fx-background-color: #ccccb3");
 
 } 
+
+  private class OpenInderface implements EventHandler<ActionEvent>{
+
+       
+        @Override
+        public void handle(ActionEvent event) {
+          Contolloer.newTabInterface(event.getSource());
+        }
+    }
 
   private class ChoiseOfDate implements EventHandler<ActionEvent>{
 
@@ -442,7 +452,7 @@ public class GUI2 extends Application {
   public void SetScreenForLiveMode(ObservableList<Task> Tasks){
       menulist.getMenus().remove(P_2_P_Menu);
       menulist.getMenus().add(P_2_P_Menu);
-       ToplineVBox.getChildren().clear();    
+      ToplineVBox.getChildren().clear();    
       tabPane.getTabs().clear();
       ToplineVBox.getChildren().addAll(menulist);    
       
@@ -460,7 +470,7 @@ public class GUI2 extends Application {
         
       // Colum 2 info
       TableColumn<Task,String> InfoColumn = new TableColumn("Info");
-        InfoColumn.setMinWidth(150);
+        InfoColumn.setMinWidth(230);
         InfoColumn.setCellValueFactory(new PropertyValueFactory<Task, String>("info"));
         InfoColumn.setCellFactory(new Callback<TableColumn<Task,String>,TableCell<Task,String>>(){
            @Override
@@ -498,13 +508,12 @@ public class GUI2 extends Application {
                           final  ObservableList<String> temp = FXCollections.observableArrayList();
                           ObservableList<TSN> temp2 = FXCollections.observableArrayList();
                           temp2.addAll(getTableView().getItems().get(getTableRow().getIndex()).getListOfNodesErros());
-                            System.out.println("Test: "+getTableView().getItems().get(getTableRow().getIndex()).getListOfNodesErros().get(0).getName());
-                            System.out.println("test nr: "+temp2.size());
+                           
                             Menu m0 = new Menu("Nodes");
                             m0.setStyle(getStyle());
                             
                              if (temp2.size() != 0) {
-                                 System.out.println("test nr: "+temp2.size());
+                                
                             for (int i = 0; i < temp2.size(); i++) {
                                
                                 temp.add(temp2.get(i).getName());
@@ -512,7 +521,9 @@ public class GUI2 extends Application {
                                 m0.getItems().add(mTemp);                                   
                                 
                                 for (int j = 0; j < temp2.get(i).getListOfInterfasErros().size(); j++) {
-                                    mTemp.getItems().add(new CheckMenuItem(temp2.get(i).getListOfInterfasErros().get(i).getName()));
+                                   MenuItem tempc = new MenuItem(temp2.get(i).getListOfInterfasErros().get(j).getName());
+                                    mTemp.getItems().add(tempc);
+                                    tempc.addEventHandler(ActionEvent.ANY, new OpenInderface());
                                     
                                 
                                 }
@@ -529,7 +540,7 @@ public class GUI2 extends Application {
                            Tooltip tip = new Tooltip();
                            tip.setText(temp.toString());
                            setTooltip(tip);
-                           
+                          // tree.getSelectionModel().selectedItemProperty().addListener((v,oldvalue,newvalue) -> {Contolloer.newTabNode(newvalue);}); 
                             
                         } 
                     }
@@ -540,14 +551,15 @@ public class GUI2 extends Application {
            }
        });
         
-        NodeErros.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Task,String>>() {
-            @Override
-            public void handle(TableColumn.CellEditEvent<Task,String> t) {               
+       NodeErros.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Task,String>>() {
+          @Override
+          public void handle(TableColumn.CellEditEvent<Task, String> event) {
+              /*((Task) t.getTableView().getItems().get(
+                        t.getTablePosition().getRow())
+                        ).setRank(t.getNewValue());*/
               
-                System.out.println("Action: "+t.getNewValue());
-                Contolloer.newTabInterface(t.getNewValue());
-               
-            }
+          }
+           
         });
        
         table.setItems(Tasks);

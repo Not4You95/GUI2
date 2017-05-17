@@ -184,7 +184,7 @@ public class Task implements Serializable{
     /**
      * @return the listOfNodesErros
      */
-    public ObservableList<TSN> getListOfNodesErros() {
+    public ObservableList<TSN> getListOfNodesErros() {       
         ObservableList<TSN> temp = FXCollections.observableArrayList();
         temp.addAll(listOfNodesErros);
         return temp;
@@ -210,7 +210,7 @@ public class Task implements Serializable{
      */
     public void setErrorNodeName(String ErrorNodeName) {
         this.ErrorNodeName.set(ErrorNodeName);
-        System.out.println("Error Node Name: "+getErrorNodeName());
+        
     }
   
   

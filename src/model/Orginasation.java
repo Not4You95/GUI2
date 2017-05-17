@@ -12,7 +12,7 @@ import java.util.ArrayList;
  *
  * @author jonas
  */
-public class Orginasation implements Serializable {
+public class Orginasation {
     private String name;
     private String info;
     private priorityAndQulaityLevels priotetForAllTSN=null;

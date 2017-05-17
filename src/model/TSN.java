@@ -62,11 +62,9 @@ public TSN(){
     
        public void addInterfaceArray(ArrayList<Interface> tempInterface){
        
-        this.listOfInterfasErros.addAll(tempInterface);
+        this.ListOfInterface = tempInterface;
     }
-    public void face(Interface tempinterface){
-        ListOfInterface.add(tempinterface);        
-    }
+    
 
     /**
      * @return the type
@@ -189,6 +187,7 @@ public TSN(){
      * @return the listOfInterfasErros
      */
     public ObservableList<Interface> getListOfInterfasErros() {
+        
         return listOfInterfasErros;
     }
 

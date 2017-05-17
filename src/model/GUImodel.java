@@ -25,8 +25,7 @@ import model.*;
  */
 public class GUImodel {
     private ArrayList<Orginasation> Org;
-    private ArrayList<Task> Tasks;
-    private ReadAndWriteToFile SaveAndRead;
+    private ArrayList<Task> Tasks; 
     private File filename;
     private String OrgName;
     private Orginasation OrgTemp;
@@ -39,7 +38,7 @@ public class GUImodel {
     public GUImodel(){
         Org = new ArrayList<Orginasation>();
         Tasks = new ArrayList<Task>();
-        SaveAndRead = new ReadAndWriteToFile();
+       
         filename = new File("test.txt");       
     }
       
@@ -125,12 +124,7 @@ public class GUImodel {
        
     }
     
-    public priorityAndQulaityLevels GetOrgQualityForAll(){
-         priorityAndQulaityLevels temp;
-       
-       temp = OrgTemp.getQualityForAllTSN();
-       return temp;
-    } 
+   
     
     public ArrayList<TSN> getNodes(){
         ArrayList<TSN> temp  = new ArrayList<>();
@@ -345,7 +339,7 @@ public class GUImodel {
         
         System.out.println("-----------------------------------------------");
         ///////////////////////////////////////////////////////////////////////
-       one.addListOfErrors(in1);
+       one.addListOfErrors(in1);       
        two.addListOfErrors(in7);
        FOUR.addListOfErrors(in5);
        five.addListOfErrors(in7);
@@ -387,9 +381,9 @@ public class GUImodel {
         task5.setNoder(temp);
         Tasks.add(task);
         Tasks.add(task2);
-       /* Tasks.add(task3);
+        Tasks.add(task3);
         Tasks.add(task4);
-        Tasks.add(task5);*/
+        Tasks.add(task5);
         
         /////////////////////////////////////////////////////
       
