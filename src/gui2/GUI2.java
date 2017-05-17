@@ -950,10 +950,16 @@ public class GUI2 extends Application {
           }
       });
        
-       
+      
        //Center pane
+       CenterPane.setVgap(20);
+       CenterPane.setHgap(5);
+       CenterPane.setAlignment(Pos.CENTER_LEFT);
+       
        
        //LeftPane
+       LeftPane.setVgap(10);
+       LeftPane.setHgap(10);
        
        
       //ImageView Image = new ImageView();
