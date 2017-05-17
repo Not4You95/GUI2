@@ -19,7 +19,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -74,13 +73,11 @@ public class GUI2 extends Application {
    private BorderPane root;
    private String State="";
    private GridPane  border;
-   private Button okButton,BackButton;
-   private MenuItem SetGroupOrg,SetPrioritForAllTask,SetQualityForAllTask,SetQualityForOneTask,SetPriorityForOneTask;
-   private MenuItem SendToSystem,P_2_P_MenuItem,SendToSystemItem;
+   private Button okButton,BackButton;   
+   private MenuItem P_2_P_MenuItem;
    private guiControler Contolloer;
-   private Menu SetTaskmMenu,SetInterfacemMenu,P_2_P_Menu,SendMenu,ModeMenu;   
-   private CheckMenuItem Plan,Live,Simulate;
-   private ListView<String> ListOfTasks;
+   private Menu P_2_P_Menu,ModeMenu;   
+   private CheckMenuItem Plan,Live;
    private HBox TopLine,TopLineLine2,CenterHBox;
    private VBox ToplineVBox,CentetVBox;
    private MenuBar menulist;
@@ -106,15 +103,14 @@ public class GUI2 extends Application {
         TopLineLine2 = new HBox();
         ToplineVBox = new VBox();
         Contolloer.setScreen();        
-        Live.setSelected(false);
-        Simulate.setSelected(false);
+        Live.setSelected(false);       
         menulist = new MenuBar();
         BackButton = new Button("Back");
         DateToPresent = LocalDate.now();
         ///////////////////////////////////////////////////////////////////////
         BackButton.addEventFilter(ActionEvent.ACTION, new BackButton());
         Contolloer.SetDate(LocalDate.now());
-        menulist.getMenus().addAll(P_2_P_Menu,ModeMenu);    
+        menulist.getMenus().add(ModeMenu);    
        
        
         root.setCenter(tabPane);
@@ -148,37 +144,11 @@ public class GUI2 extends Application {
     Plan.addEventHandler(ActionEvent.ACTION, new ModeMenuChoice());
     Live = new CheckMenuItem("Live");
     Live.addEventHandler(ActionEvent.ACTION, new ModeMenuChoice());
-    Simulate = new CheckMenuItem("Simnulate");
-    Simulate.addEventHandler(ActionEvent.ACTION, new ModeMenuChoice());
-    ModeMenu.getItems().addAll(Plan,Live,Simulate);
+   // Simulate = new CheckMenuItem("Simnulate");
+    //Simulate.addEventHandler(ActionEvent.ACTION, new ModeMenuChoice());
+    ModeMenu.getItems().addAll(Plan,Live);
 
 }   
-
-  public void TaskMenu(){
-    SetTaskmMenu = new Menu("_Task");
-    SetPrioritForAllTask = new MenuItem("Set Priority for all task");
-    SetPrioritForAllTask.addEventHandler(ActionEvent.ACTION, new MenuTaskChoice());
-   SetQualityForAllTask = new MenuItem("Set Quality for all task");
-   SetQualityForAllTask.addEventHandler(ActionEvent.ACTION, new MenuTaskChoice());
-    SetTaskmMenu.getItems().addAll(SetPrioritForAllTask,SetQualityForAllTask);
-        
-}
-
-  public void InterfaceMenu(){
-    SetInterfacemMenu = new Menu("_Comunication type");
-    SetPriorityForOneTask = new MenuItem("Set Priority");
-    SetPriorityForOneTask.addEventHandler(ActionEvent.ACTION, new menuInterfaceChoice());
-    SetQualityForOneTask = new MenuItem("Set Quality");
-    SetQualityForOneTask.addEventHandler(ActionEvent.ACTION, new menuInterfaceChoice());
-    SetInterfacemMenu.getItems().addAll(SetPriorityForOneTask,SetQualityForOneTask);
-}
-
-  public void SendMenu(){
-    SendMenu = new Menu("_Send");
-    SendToSystem = new Menu("Send to system");
-    SendToSystem.addEventHandler(ActionEvent.ACTION, new MenuSendChoice());
-    SendMenu.getItems().add(SendToSystem);
-}
 
   public void P_2_PMenu(){
     P_2_P_Menu = new Menu("_P_2_P");
@@ -186,21 +156,7 @@ public class GUI2 extends Application {
     P_2_P_MenuItem = new MenuItem("P-2-P");
     P_2_P_MenuItem.addEventHandler(ActionEvent.ACTION, new MenuP_2_PChoice());
     P_2_P_Menu.getItems().add(P_2_P_MenuItem);
-} 
-  
-  public void setListOfTask(){
-    ListOfTasks = new ListView<String>();
-    ListOfTasks.setPrefSize(100, 280);
-    ListOfTasks.getSelectionModel().selectedIndexProperty().addListener((v,oldvalue,newvalue)-> Contolloer.setDesierdTask((int) newvalue));
-    
-}
-  
-  public void UppdateListOfTask(ArrayList<String> task){
-      tabPane.getTabs().clear();
-     ListOfTasks.getItems().clear();
-     ListOfTasks.getItems().addAll(task);
-   
-}
+}     
 
   public void SetColor(){
     TopLine.setStyle("-fx-background-color: #ccccb3");
@@ -238,16 +194,6 @@ public class GUI2 extends Application {
         }
     }
 
-  private class P_2_PButtonChice implements EventHandler<ActionEvent>{       
-
-        @Override
-        public void handle(ActionEvent event) {
-            if (event.getSource() == okButton) {
-                tabPane.getTabs().remove(tabP_2_P);
-            }
-        }
-    } 
-
   private class ModeMenuChoice implements EventHandler<ActionEvent>{
 
         @Override
@@ -260,17 +206,13 @@ public class GUI2 extends Application {
                
                 Contolloer.modeState(false, true,false);
             }
-            else if (event.getSource() == Simulate) {
-             
-                Contolloer.modeState(false, false,true);
-            }
+           
         }
     }
     
   public void upDateModeState(boolean Plan,boolean Live,boolean Simulate){
         this.Plan.setSelected(Plan);
-        this.Live.setSelected(Live);
-        this.Simulate.setSelected(Simulate);
+        this.Live.setSelected(Live);        
     }
     
   private class MenuP_2_PChoice implements EventHandler<ActionEvent>{
@@ -284,51 +226,7 @@ public class GUI2 extends Application {
                 
             }
         }
-    }
-
-  private class MenuSendChoice implements EventHandler<ActionEvent>{
-
-       
-
-        @Override
-        public void handle(ActionEvent event) {
-            if (event.getSource() == SendToSystem) {
-                System.out.println("Send To System\n");
-                
-            }
-        }
     }  
-
-  private class MenuTaskChoice implements EventHandler<ActionEvent>{
-
-        
-        @Override
-        public void handle(ActionEvent event) {
-            
-            if (event.getSource() == SetQualityForAllTask) {
-                System.out.println("Set Quality\n");
-                
-            }else if (event.getSource() == SetPrioritForAllTask) {
-                System.out.println("Set Priority\n");
-            }
-                
-        }
-    }
-
-  private class menuInterfaceChoice implements EventHandler<ActionEvent>{
-
-       
-        
-        @Override
-        public void handle(ActionEvent event) {
-            if (event.getSource() == SetPriorityForOneTask) {
-                System.out.println("Set priority\n");
-            }
-            else if(event.getSource() == SetQualityForOneTask){
-                System.out.println("Set Quality\n");
-            }
-        }
-    }   
     
   public void  OverViewSceen(int Rank,String info,Calendar startDate,Calendar endDate, Task temp){
         Net = new GridPane();
@@ -470,6 +368,7 @@ public class GUI2 extends Application {
      
       TopLineLine2 = new HBox();      
       TopLineLine2.setSpacing(20);
+      menulist.getMenus().remove(P_2_P_Menu);
       //////Time Choise/////////////////////
         dateFormatter = DateTimeFormatter.ofPattern(pattern);
         DatePicer = new DatePicker(DateToPresent);
@@ -522,7 +421,7 @@ public class GUI2 extends Application {
   
   public void topLineforEdeting(){
        
-        
+        menulist.getMenus().add(P_2_P_Menu);
         /////////////////////////////////////////////////////////////
         TopLine.setAlignment(Pos.CENTER_LEFT);
         TopLine.getChildren().clear();
@@ -541,15 +440,12 @@ public class GUI2 extends Application {
   }
   
   public void SetScreenForLiveMode(ObservableList<Task> Tasks){
-       Label Task = new Label("Task");
-       TopLineLine2.getChildren().clear();
-       ToplineVBox.getChildren().clear();
-      TopLineLine2.getChildren().addAll(Task);
+      menulist.getMenus().remove(P_2_P_Menu);
+      menulist.getMenus().add(P_2_P_Menu);
+       ToplineVBox.getChildren().clear();    
       tabPane.getTabs().clear();
-      ToplineVBox.getChildren().addAll(menulist,TopLineLine2);
-     // root.setLeft(ListOfTasks);
+      ToplineVBox.getChildren().addAll(menulist);    
       
-     
       tabLiveMode = new Tab("Live");
       tabPane.getTabs().clear();
       
@@ -561,13 +457,10 @@ public class GUI2 extends Application {
         misionColumn.setCellValueFactory(
             new PropertyValueFactory<Task, String>("Name")); 
            
-         
-                     
-      
         
       // Colum 2 info
       TableColumn<Task,String> InfoColumn = new TableColumn("Info");
-        InfoColumn.setMinWidth(100);
+        InfoColumn.setMinWidth(150);
         InfoColumn.setCellValueFactory(new PropertyValueFactory<Task, String>("info"));
         InfoColumn.setCellFactory(new Callback<TableColumn<Task,String>,TableCell<Task,String>>(){
            @Override
@@ -588,100 +481,77 @@ public class GUI2 extends Application {
             
         });
         
-      // Comul 3 Error for Com type
-      TableColumn comErrors = new TableColumn("Error Com type");
-      comErrors.setMinWidth(200);     
-      comErrors.setCellValueFactory(new PropertyValueFactory<Task,String>("test"));
-      comErrors.setCellFactory(new Callback<TableColumn<Task,String>,TableCell<Task,String>>() {
-           @Override
-           public TableCell<Task, String> call(TableColumn<Task, String> param) {
-              ComboBoxTableCell<Task,String> cell =  new ComboBoxTableCell<Task,String>(){
-                  
-                  @Override
-                  public void updateItem(String item, boolean empty){
-                      super.updateItem(item, empty);
-                      System.out.println("--------------------------------------------------");
-                     if (!empty) {                        
-                          getItems().clear();
-                          ObservableList<String> temp = FXCollections.observableArrayList();
-                          ObservableList<String> temp2 = FXCollections.observableArrayList("Hello","Hej");
-                      //Task temp = getTableView().getItems().get(getTableRow().getIndex());
-                      ObservableList<Interface> test = getTableView().getItems().get(getTableRow().getIndex()).getListOfErrors();    
-                         for (int i = 0; i < test.size(); i++) {
-                             temp.add(test.get(i).getName());
-                         }                    
-                      
-                          // getItems().addAll(temp);*/
-                         for (int i = 0; i < temp.size(); i++) {
-                             System.out.println("Test: "+temp.get(i));
-                         }
-                         getItems().addAll(temp2);
-                         // System.out.println("Hello2: "+test.get(0).getName());
-                         Tooltip tip = new Tooltip();
-                         tip.setText(temp.toString());
-                         setTooltip(tip);
-                          
-                      }
-                  }
-              };
-               return cell;
-           }
-       });
-        
-        comErrors.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Task,String>>() {
-            @Override
-            public void handle(TableColumn.CellEditEvent<Task,String> t) {               
-               /* ((Task) t.getTableView().getItems().get(
-                        t.getTablePosition().getRow())
-                        ).setRank(t.getNewValue());*/
-                System.out.println("Action: "+t.getNewValue());
-               
-            }
-        });
+     
         
         
         //Colum 4 Error for 
-        TableColumn NodeErros = new TableColumn("Error Nodes");
+        TableColumn NodeErros = new TableColumn("Nodes with Error");
         NodeErros.setMinWidth(200);
-        NodeErros.setCellValueFactory(new PropertyValueFactory<Task,String>(""));
+        NodeErros.setCellValueFactory(new PropertyValueFactory<Task,String>("ErrorNodeName"));
         NodeErros.setCellFactory(new Callback<TableColumn<Task,String>,TableCell<Task,String>>() {
            @Override
            public TableCell<Task, String> call(TableColumn<Task, String> param) {
-             ComboBoxTableCell<Task,String> cell =  new ComboBoxTableCell<Task,String>(){
-                  
-                  @Override
-                  public void updateItem(String item, boolean empty){
-                      super.updateItem(item, empty);
-                      System.out.println("--------------------------------------------------");
-                     if (!empty) {                        
-                          getItems().clear();
-                          ObservableList<String> temp = FXCollections.observableArrayList();
-                          ObservableList<String> temp2 = FXCollections.observableArrayList("Hello","Hej");
-                      //Task temp = getTableView().getItems().get(getTableRow().getIndex());
-                      ObservableList<Interface> test = getTableView().getItems().get(getTableRow().getIndex()).getListOfErrors();    
-                         for (int i = 0; i < test.size(); i++) {
-                             temp.add(test.get(i).getName());
-                         }                    
-                      
-                          // getItems().addAll(temp);*/
-                         for (int i = 0; i < temp.size(); i++) {
-                             System.out.println("Test: "+temp.get(i));
-                         }
-                         getItems().addAll(temp2);
-                         Tooltip tip = new Tooltip();
-                         tip.setText(temp.toString());
-                         setTooltip(tip);
-                         // System.out.println("Hello2: "+test.get(0).getName());
-                          
-                      }
-                  }
-              };
+             TableCell<Task, String> cell = new TableCell<Task, String>(){
+                    @Override
+                    public void updateItem(String item, boolean empty) {
+                        if(item!=null){
+                          final  ObservableList<String> temp = FXCollections.observableArrayList();
+                          ObservableList<TSN> temp2 = FXCollections.observableArrayList();
+                          temp2.addAll(getTableView().getItems().get(getTableRow().getIndex()).getListOfNodesErros());
+                            System.out.println("Test: "+getTableView().getItems().get(getTableRow().getIndex()).getListOfNodesErros().get(0).getName());
+                            System.out.println("test nr: "+temp2.size());
+                            Menu m0 = new Menu("Nodes");
+                            m0.setStyle(getStyle());
+                            
+                             if (temp2.size() != 0) {
+                                 System.out.println("test nr: "+temp2.size());
+                            for (int i = 0; i < temp2.size(); i++) {
+                               
+                                temp.add(temp2.get(i).getName());
+                                Menu mTemp = new Menu(temp2.get(i).getName());
+                                m0.getItems().add(mTemp);                                   
+                                
+                                for (int j = 0; j < temp2.get(i).getListOfInterfasErros().size(); j++) {
+                                    mTemp.getItems().add(new CheckMenuItem(temp2.get(i).getListOfInterfasErros().get(i).getName()));
+                                    
+                                
+                                }
+                            }
+                           }
+                            
+                           
+                           MenuBar mb = new MenuBar(m0);
+                           mb.setMaxWidth(90);
+                           //mb.setStyle(getTableView().getColumns().get(2).getStyle());
+                           
+                           
+                           setGraphic(mb);
+                           Tooltip tip = new Tooltip();
+                           tip.setText(temp.toString());
+                           setTooltip(tip);
+                           
+                            
+                        } 
+                    }
+                };
+             
+             
                return cell;
            }
        });
         
+        NodeErros.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Task,String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<Task,String> t) {               
+              
+                System.out.println("Action: "+t.getNewValue());
+                Contolloer.newTabInterface(t.getNewValue());
+               
+            }
+        });
+       
         table.setItems(Tasks);
-        table.getColumns().addAll(misionColumn,InfoColumn,comErrors,NodeErros);
+        table.getColumns().addAll(misionColumn,InfoColumn,NodeErros);
         tabLiveMode.setContent(table);
         tabLiveMode.setClosable(false);
         
@@ -720,17 +590,8 @@ public class GUI2 extends Application {
         TableColumn InfoColumn = new TableColumn("Mission info");
         InfoColumn.setMinWidth(200);
         InfoColumn.setCellValueFactory(
-            new PropertyValueFactory<Task, String>("info"));
-      
+            new PropertyValueFactory<Task, String>("info"));     
         
-        /*TableColumn StartTimeColumn = new TableColumn("Start Time");
-        StartTimeColumn.setMinWidth(150);
-        StartTimeColumn.setCellValueFactory(new PropertyValueFactory<Task,Date>("StartTime"));
-        
-        TableColumn EndTimeColumn = new TableColumn("End time");
-        StartTimeColumn.setMaxWidth(150);
-        EndTimeColumn.setCellValueFactory(new PropertyValueFactory<Task,Date>("EndTime"));*/
-       
  
         TableColumn OrgColumn = new TableColumn("Orginasation");
         OrgColumn.setMinWidth(200);
@@ -929,17 +790,24 @@ public class GUI2 extends Application {
   public void nodeAndComtypeTab(TSN temp,Interface itemp){
       
       String name = null,info = null,priority = null,quality = null;
+      Image image = null;// = new Image(getClass().getResourceAsStream("noPic.JPG"));
+      
       if (temp != null) {
           name = temp.getName();
           info = temp.getInfo();
           priority = temp.getPriority().toString();
           quality = temp.getQuality().toString();
+          System.out.println("Image: "+temp.getImage());
+          image = temp.getImage();
       }
       else if(itemp != null){
           name = itemp.getName();
           info = itemp.getInfo();         
           priority = itemp.getPriority().toString();
-          quality = itemp.getQuality().toString();
+          quality = itemp.getQuality().toString();                      
+          System.out.println("Image: "+itemp.getImage().toString());
+          System.out.println("Name: "+itemp.getName());
+          image = itemp.getImage();
       }
       
       System.out.println("Priority: "+priority);
@@ -963,10 +831,10 @@ public class GUI2 extends Application {
     final  ComboBox<String> QulBox = new ComboBox<>(levels);      
     //  QulBox.setPromptText("Quality");
      QulBox.setValue(quality);
-      TextArea text = new TextArea(info);
+       TextArea text = new TextArea(info);
        text.setMaxWidth(150);
-       text.setMinHeight(130);
-       text.setPrefColumnCount(10);
+       text.setMinHeight(10);
+      // text.setPrefColumnCount(10);
        text.setWrapText(true);
        text.setMouseTransparent(true);
        text.setFocusTraversable(false);
@@ -995,13 +863,19 @@ public class GUI2 extends Application {
        
        
       //ImageView Image = new ImageView();
-      //Image image1 = new Image(Main.class.getResourceAsStream(""));
+      ImageView imageView = new ImageView();
+      imageView.setImage(image);
+      imageView.setFitHeight(75);
+      imageView.setFitWidth(125);      
+      imageView.setSmooth(true);
+      imageView.setCache(true);
       
-      netPane.setVgap(20);
+      
+      netPane.setVgap(5);
       netPane.setHgap(20);
       
       //Image
-      //netPane.add(Image, 1, 0);
+      netPane.add(imageView, 1, 1);
       
       //TextArea
       netPane.add(infoLabel, 1, 2);
@@ -1014,7 +888,7 @@ public class GUI2 extends Application {
       netPane.add(QulBox, 3, 2);
       
       //ok button
-       netPane.add(okButton, 7, 2);
+       netPane.add(okButton, 7, 3);
       tab.setContent(netPane);
               
       tabPane.getTabs().add(tab);

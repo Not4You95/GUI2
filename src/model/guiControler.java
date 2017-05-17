@@ -67,17 +67,11 @@ public class guiControler {
        
     }
     
-    public void setScreen(){      
-        gui.TaskMenu();
-        gui.InterfaceMenu();
-        gui.P_2_PMenu();
-        gui.SendMenu();        
-        gui.setListOfTask();
+    public void setScreen(){     
+        gui.P_2_PMenu();     
         tempTask.clear();
         gui.ModeMenu();
        
-        //UppdateScreen();
-        
     }
     public void setScreenLiveMode(){
         
@@ -126,19 +120,25 @@ public class guiControler {
     
     public void updateP_2_P(){
           gui.P_2_PScreen(model.getNodesOfTypeString(),model.getInterfacesOfTypeStrings());
-      }
+      }    
     
-    public void choiseOfInterface(String temp){
-        //gui.makeNewTabView(temp,"");
-        System.out.println("hello");
-       
+    
+    public void choiseOfInterfaceLiveMode(Object intName,String Mission){
+        model.SetTempTask(Mission);
+        newTabInterface(intName);
+    }
+    
+    public void choiseOfNodeLiveMode(Object nodeName,String Mission){
+        model.SetTempTask(Mission);
+        newTabNode(nodeName);
     }
     
     public void newTabInterface(Object node){
         Interface temp  = model.getInterface(node.toString());
         System.out.println("node: "+node.toString());
-        System.out.println("test: "+temp.getName());
+        System.out.println("test: "+temp);
         if (temp != null) {
+            System.out.println("test: "+temp.getName());
             gui.nodeAndComtypeTab(null, temp);
         }
     }    

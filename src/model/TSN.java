@@ -9,6 +9,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.jar.Attributes;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
+
 
 /**
  *
@@ -21,6 +25,9 @@ private SimpleStringProperty info = new SimpleStringProperty();
 private ArrayList<Interface> ListOfInterface;
 private priorityAndQulaityLevels Priority;
 private priorityAndQulaityLevels quality ;
+private Image image=null; 
+private  ObservableList<Interface> listOfInterfasErros;
+
 
 /**
  * Constructur
@@ -31,7 +38,9 @@ public TSN(String name)
        setName(name);       
        this.Priority = priorityAndQulaityLevels.Standard;
        this.quality = priorityAndQulaityLevels.Standard;
-       ListOfInterface = new ArrayList<Interface>();
+       this.listOfInterfasErros = FXCollections.observableArrayList();
+       //"pic\noPic.JPG" 
+       this.image = new Image(getClass().getResourceAsStream("noPic.JPG"));
     
 }
 /**
@@ -44,21 +53,18 @@ public TSN(){
 
     /**
      * @return the name
-     */
-   
+     */   
     public void SetPriorityForAllInterface(priorityAndQulaityLevels priority){
         for (int i = 0; i < ListOfInterface.size(); i++) {
             ListOfInterface.get(i).SetPriority(priority);
         }
     }
     
-    public void SetPriorityForSpecialInterface(){
-        
+       public void addInterfaceArray(ArrayList<Interface> tempInterface){
+       
+        this.listOfInterfasErros.addAll(tempInterface);
     }
-    public void addInterfaceArray(ArrayList<Interface> tempInterface){
-        ListOfInterface.addAll(tempInterface);
-    }
-    public void addInterface(Interface tempinterface){
+    public void face(Interface tempinterface){
         ListOfInterface.add(tempinterface);        
     }
 
@@ -137,6 +143,12 @@ public TSN(){
     public void setPriority(priorityAndQulaityLevels Priority) {
         this.Priority = Priority;
     }
+    
+     
+    public void addListOfErrors(Interface input){        
+        listOfInterfasErros.add(input);
+    }    
+    
 
     /**
      * @param quality the quality to set
@@ -157,6 +169,34 @@ public TSN(){
      */
     public priorityAndQulaityLevels getQuality() {
         return quality;
+    }
+
+    /**
+     * @return the imgag
+     */
+    public Image getImage() {
+        return image;
+    }
+
+    /**
+     * @param image the imgag to set
+     */
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    /**
+     * @return the listOfInterfasErros
+     */
+    public ObservableList<Interface> getListOfInterfasErros() {
+        return listOfInterfasErros;
+    }
+
+    /**
+     * @param listOfInterfasErros the listOfInterfasErros to set
+     */
+    public void setListOfInterfasErros(ObservableList<Interface> listOfInterfasErros) {
+        this.listOfInterfasErros = listOfInterfasErros;
     }
 
    

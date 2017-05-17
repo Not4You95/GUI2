@@ -16,6 +16,7 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
 import model.*;
 
 /**
@@ -70,6 +71,16 @@ public class GUImodel {
     
     public void SetTempTask(int task){
         taskTemp = Tasks.get(task);
+    }
+    
+    public void SetTempTask(String name){
+        for (int i = 0; i < Tasks.size(); i++) {
+            System.out.println("TempTask: "+Tasks.get(i).getName().toLowerCase().contains(name.toLowerCase()));
+            if (Tasks.get(i).getName().toLowerCase().contains(name.toLowerCase())) {
+                taskTemp = Tasks.get(i);
+            }
+            
+        }
     }
     
     public void settempTask(Task obejct){
@@ -150,9 +161,11 @@ public class GUImodel {
         if(taskTemp != null){            
              ArrayList<Interface> Itemp = new ArrayList<>();
              Itemp.addAll(getInterfacesTypes());
+             
             
              for (int i = 0; i < Itemp.size(); i++) {
-                 
+                 System.out.println("Name: "+Itemp.get(i).getName());
+                 System.out.println("Name: "+name.toLowerCase().contains(Itemp.get(i).getName().toLowerCase()));
                  if (name.toLowerCase().contains(Itemp.get(i).getName().toLowerCase())) {
                      return Itemp.get(i);
                  }
@@ -219,22 +232,52 @@ public class GUImodel {
         ArrayList<Orginasation> orgList = new ArrayList<Orginasation>();
         Task task = new Task("Defend the hill", "Defend the hill from being occupied", "7 Bataljonen");
         Task task2 = new Task("Defend the the food reserve","Defend the food from unauthorized people","Livgardet");
-      
+        Task task3 = new Task("Medivac", "Evacuate injured civilians from central Stockholm", "Skyttebataljonen");
+        Task task4 = new Task("Standard operation", "Defend The Royal Palace", "Livbataljonen");
+        Task task5 = new Task("Defend Musköbasen", "Defend Musköbasen from beeing ocupied", "Amfibiebataljonen");
         ArrayList<Task> taskList = new ArrayList<Task>();      
        
        Interface in1 = new Interface("BFT",InterfaceTypes.Tracking);
-       Interface in2 = new Interface("Voice", InterfaceTypes.Voice);
-       Interface in3 = new Interface("ISR", InterfaceTypes.Mesagge);
-       Interface in4  =new Interface("Video",  InterfaceTypes.Video);
-       Interface in5 = new Interface("Contol", InterfaceTypes.Mesagge);
-       in1.setInfo("Blue Force Tracking is GPS system that provieds location infromation");
+       Interface in2 = new Interface("COP", InterfaceTypes.Video);
+       Interface in3 = new Interface("Voice", InterfaceTypes.Voice);
+       Interface in4 = new Interface("ISR", InterfaceTypes.Mesagge);
+       Interface in5  =new Interface("Video",  InterfaceTypes.Video);
+       Interface in6 = new Interface("Msg", InterfaceTypes.Mesagge);
+       Interface in7 = new Interface("Contol", InterfaceTypes.Mesagge);
        
-       ArrayList<Interface> listInter = new ArrayList<>();
-       listInter.add(in1);
-       listInter.add(in2);
-       listInter.add(in3);
-       listInter.add(in4);
-       listInter.add(in5);
+       
+       
+       in1.setInfo("Blue Force Tracking is GPS system that provieds location infromation");
+       in2.setInfo("Common Operational Picture");
+       in3.setInfo("Striming Voice");
+       in4.setInfo("Intelligence,survillance and reconnaissace");
+       in5.setInfo("Striming Video");
+       in6.setInfo("Cimmand andcontol messages");
+       in7.setInfo("System Management traffic");
+       
+       
+       
+       ArrayList<Interface> uav = new ArrayList<>(),dataFusion = new ArrayList<>(),all= new ArrayList<>();
+       uav.add(in1);
+       uav.add(in4);
+       uav.add(in5);
+       uav.add(in7);
+       
+       dataFusion.add(in2);
+       dataFusion.add(in7);
+       
+       all.add(in1);
+       all.add(in2);
+       all.add(in3);
+       all.add(in4);
+       all.add(in5);
+       all.add(in6);
+       all.add(in7);
+       
+      
+       
+       
+      
        GregorianCalendar c = new GregorianCalendar() ,c2 =  new GregorianCalendar();         
        c.set(LocalDate.now().getYear(), LocalDate.now().getMonthValue()-1, LocalDate.now().getDayOfMonth() ,LocalTime.now().getHour(),LocalTime.now().getMinute());
    
@@ -246,40 +289,86 @@ public class GUImodel {
        task2.setStartTime(c);
        task2.setEndTime(c2);
        
-        
+       task3.setStartTime(c);
+       task3.setEndTime(c2);
+       
+       task4.setStartTime(c);
+       task4.setEndTime(c2);
+       
+       task5.setStartTime(c);
+       task5.setEndTime(c2);
+       
+       //Image
+          Image Comand = new Image(getClass().getResourceAsStream("COM.JPG"));
+          Image Hospital = new Image(getClass().getResourceAsStream("Hospital.JPG"));
+         // Image uav = new Image(getClass().getResourceAsStream("uav.JPG"));
+       
+       
+       
+       //Interfaces 
         TSN one = new TSN("UAV ISR Global");
         one.setType(TSNTypes.UAV);
-        one.addInterfaceArray(listInter);
+        one.addInterfaceArray(uav);        
+       // one.setImage(uav);
+       
         TSN two = new TSN("Datafusion M");
-        two.addInterfaceArray(listInter);
+        two.addInterfaceArray(dataFusion);
         two.setType(TSNTypes.Radar);
+        
         TSN three = new TSN("Datafusion S");
-        three.addInterfaceArray(listInter);
+        three.addInterfaceArray(dataFusion);
         three.setType(TSNTypes.Radar);
+        
         TSN FOUR = new TSN("Troups");
-        FOUR.addInterfaceArray(listInter);
+        FOUR.addInterfaceArray(all);
         FOUR.setType(TSNTypes.Troup);
+        
         TSN five = new TSN("Military Hospital");
-        five.addInterfaceArray(listInter);
+        five.addInterfaceArray(all);
         five.setType(TSNTypes.Hospital);
+        five.setImage(Hospital);
+        
         TSN six = new TSN("BMS/Soldier");
-        six.addInterfaceArray(listInter);
+        six.addInterfaceArray(all);
         six.setType(TSNTypes.Troup);
+        
         TSN seven = new TSN("Deployed c2");
-        seven.addInterfaceArray(listInter);
+        seven.addInterfaceArray(all);
         seven.setType(TSNTypes.Comand_Central);
+        seven.setImage(Comand);
+        
         TSN eight = new TSN("UAV Local");
-        eight.addInterfaceArray(listInter);
+        eight.addInterfaceArray(uav);
         eight.setType(TSNTypes.UAV);
+       // eight.setImage(uav);
         //System.out.println(one.getName());
         
         System.out.println("-----------------------------------------------");
         ///////////////////////////////////////////////////////////////////////
-        task.addListOfErrors(in1);
-        task.addListOfErrors(in2);
+       one.addListOfErrors(in1);
+       two.addListOfErrors(in7);
+       FOUR.addListOfErrors(in5);
+       five.addListOfErrors(in7);
+       six.addListOfErrors(in3);
+       seven.addListOfErrors(in5);
         
-        task2.addListOfErrors(in3);
-        task2.addListOfErrors(in4);
+        
+        
+        ////////////////////////////////////////////////////////////////////////
+       
+        task.setListOfNodesErros(one);   
+        task2.setListOfNodesErros(six);        
+        
+        task3.setListOfNodesErros(five);
+        task3.setListOfNodesErros(six);
+        
+       
+        task4.setListOfNodesErros(five);
+        task4.setListOfNodesErros(six);
+        
+        
+        task5.setListOfNodesErros(five);
+        task5.setListOfNodesErros(six);
         
         temp.add(one);
         temp.add(two);
@@ -289,12 +378,19 @@ public class GUImodel {
         temp.add(six);
         temp.add(seven);
         temp.add(eight);
+        
+        
         task.setNoder(temp);
         task2.setNoder(temp);
-        taskList.add(task);
-        taskList.add(task2);
+        task3.setNoder(temp);
+        task4.setNoder(temp);
+        task5.setNoder(temp);
         Tasks.add(task);
         Tasks.add(task2);
+       /* Tasks.add(task3);
+        Tasks.add(task4);
+        Tasks.add(task5);*/
+        
         /////////////////////////////////////////////////////
       
 

@@ -6,6 +6,7 @@
 package model;
 
 import java.io.Serializable;
+import javafx.scene.image.Image;
 
 /**
  *
@@ -19,18 +20,16 @@ public class Interface implements Serializable {
     private InterfaceTypes type;
     private String Name;
     private String info;
-    
-    
+    private Image image=null;     
             
-    public Interface (){
-    
-    
-}
+   
     public Interface(String name,InterfaceTypes type){
         this.Name = name;
         this.Priority = priorityAndQulaityLevels.Standard;
         this.Quality = priorityAndQulaityLevels.Standard;
         this.type = type;
+        this.image = new Image(getClass().getResourceAsStream("noPic.JPG"));
+        
     }
     
     public void SetPriority(priorityAndQulaityLevels Priority){
@@ -134,6 +133,21 @@ public class Interface implements Serializable {
         this.info = info;
     }
 
+    /**
+     * @return the image
+     */
+    public Image getImage() {
+        return image;
+    }
+
+    /**
+     * @param image the image to set
+     */
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+ 
     
     
 }
