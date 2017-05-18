@@ -138,7 +138,7 @@ public class GUI2 extends Application {
         Bounds Inscreen = DatePicer.localToScene(DatePicer.getBoundsInLocal());
         System.out.println("Start Center point: Height: "+height+" With: "+with);
         System.out.println("Menulist: " +DatePicer.getWidth());
-        System.out.println("Bounds: "+(Inscreen.getMaxX()+DatePicer.getWidth()));
+        System.out.println("Interface: "+Interface);
     
     }
     
@@ -152,7 +152,7 @@ public class GUI2 extends Application {
         Overview.setClosable(false);
         Interface.setClosable(false);
         Nodes.setClosable(false);        
-        tabPane.getTabs().addAll(Overview,Interface,Nodes);      
+        tabPane.getTabs().addAll(Overview,Nodes,Interface);      
            
         
         

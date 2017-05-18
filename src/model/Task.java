@@ -52,11 +52,7 @@ public class Task implements Serializable{
     }
     
      
-     public void SetpriorityForAllTSN(priorityAndQulaityLevels priority){
-         for (int i = 0; i < getNoder().size(); i++) {
-             getNoder().get(i).SetPriorityForAllInterface(priority);
-         }
-     }
+   
 
     /**
      * @return the noder
