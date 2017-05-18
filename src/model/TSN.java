@@ -51,14 +51,6 @@ public TSN(){
     ListOfInterface = new ArrayList<Interface>();
 }
 
-    /**
-     * @return the name
-     */   
-    public void SetPriorityForAllInterface(priorityAndQulaityLevels priority){
-        for (int i = 0; i < ListOfInterface.size(); i++) {
-            ListOfInterface.get(i).SetPriority(priority);
-        }
-    }
     
        public void addInterfaceArray(ArrayList<Interface> tempInterface){
        
@@ -196,6 +188,13 @@ public TSN(){
      */
     public void setListOfInterfasErros(ObservableList<Interface> listOfInterfasErros) {
         this.listOfInterfasErros = listOfInterfasErros;
+    }
+
+    /**
+     * @param info the info to set
+     */
+    public void setInfo(String info) {
+        this.info.set(info);
     }
 
    

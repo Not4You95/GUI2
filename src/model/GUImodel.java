@@ -327,6 +327,7 @@ public boolean isAMissionChosen(){
        //Image
           Image Comand = new Image(getClass().getResourceAsStream("COM.JPG"));
           Image Hospital = new Image(getClass().getResourceAsStream("Hospital.JPG"));
+          Image uavI = new Image(getClass().getResourceAsStream("uav.JPG"));
          // Image uav = new Image(getClass().getResourceAsStream("uav.JPG"));
        
        
@@ -353,6 +354,7 @@ public boolean isAMissionChosen(){
         five.addInterfaceArray(all);
         five.setType(TSNTypes.Hospital);
         five.setImage(Hospital);
+        five.setInfo("MEDICAL TREATMENT FACILITY");
         
         TSN six = new TSN("BMS/Soldier");
         six.addInterfaceArray(all);
@@ -366,7 +368,7 @@ public boolean isAMissionChosen(){
         TSN eight = new TSN("UAV Local");
         eight.addInterfaceArray(uav);
         eight.setType(TSNTypes.UAV);
-       // eight.setImage(uav);
+       // eight.setImage(uavI);
         //System.out.println(one.getName());
         
         System.out.println("-----------------------------------------------");

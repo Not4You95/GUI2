@@ -20,7 +20,9 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -121,13 +123,26 @@ public class GUI2 extends Application {
         root.setCenter(tabPane);
         Contolloer.modeState();
         SetColor();
+        
         Scene scene = new Scene(root, 700, 320);
         
+       new getMuseCordinates(root);
+       new getMuseCordinates(menulist);
         primaryStage.setTitle("GUI");
         primaryStage.setScene(scene);
         primaryStage.show();
+        
+        //
+        double height = scene.getHeight()/2;
+        double with = scene.getWidth()/2;
+        Bounds Inscreen = DatePicer.localToScene(DatePicer.getBoundsInLocal());
+        System.out.println("Start Center point: Height: "+height+" With: "+with);
+        System.out.println("Menulist: " +DatePicer.getWidth());
+        System.out.println("Bounds: "+(Inscreen.getMaxX()+DatePicer.getWidth()));
     
     }
+    
+   
     
   public void SetTabsForLiveMode(){
         tabPane.getTabs().clear();
@@ -152,6 +167,7 @@ public class GUI2 extends Application {
    // Simulate = new CheckMenuItem("Simnulate");
     //Simulate.addEventHandler(ActionEvent.ACTION, new ModeMenuChoice());
     ModeMenu.getItems().addAll(Plan,Live);
+    
 
 }   
 
@@ -415,6 +431,8 @@ public class GUI2 extends Application {
         dateFormatter = DateTimeFormatter.ofPattern(pattern);
         DatePicer = new DatePicker(DateToPresent);
         DatePicer.setShowWeekNumbers(true);
+        new getMuseCordinates(DatePicer);
+        
         Button SimulateButton = new Button("Simulate");
         //"-fx-base: #ccccb3"
         SimulateButton.setStyle("-fx-background-color: #ccccb3");
@@ -657,6 +675,12 @@ public class GUI2 extends Application {
       topLineForPlanmode();
       SetColor();
       State = "Plan";
+      new getMuseCordinates(tabPane);
+      //
+       
+
+      
+      
       ///Update level of ranks
       ObservableList<Integer> ratingSample = FXCollections.observableArrayList();
         for (int i = 1; i < Tasks.size()+1; i++) {
@@ -665,7 +689,7 @@ public class GUI2 extends Application {
       
         // Tabels
       TableView<Task> table = new TableView<>();     
-      
+      new getMuseCordinates(table);
       
       table.setEditable(true);
  
@@ -702,10 +726,13 @@ public class GUI2 extends Application {
                 ((Task) t.getTableView().getItems().get(
                         t.getTablePosition().getRow())
                         ).setRank(t.getNewValue());
+                
+                
                
             }
         });
         //rankColumn.
+       
         Tooltip tooltip = new Tooltip();
         tooltip.setText("Double click at the rank number to change the value");
         //tooltip.wrapTextProperty(true);
@@ -819,8 +846,12 @@ public class GUI2 extends Application {
        
       // Ok button 
       okButton = new Button("Ok");
-      //okButton.addEventHandler(ActionEvent.ACTION, new P_2_PButtonChice(){});
-       //tree.getSelectionModel().selectedItemProperty().addListener((v,oldvalue,newvalue) -> {Contolloer.newTabNode(newvalue);}); 
+      double test = textnode1P2P.getWidth()-10;
+      okButton.localToScene(okButton.getBoundsInLocal());
+    
+      
+      
+      
        okButton.setOnAction(new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent event) {
