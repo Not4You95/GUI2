@@ -257,7 +257,7 @@ public boolean isAMissionChosen(){
           ArrayList<TSN> temp = new ArrayList<TSN>();
         ArrayList<Orginasation> orgList = new ArrayList<Orginasation>();
         Task task = new Task("Defend the hill", "Defend the hill from being occupied", "7 Bataljonen");
-        Task task2 = new Task("Defend the the food reserve","Defend the food from unauthorized people","Livgardet");
+      //  Task task2 = new Task("Defend the food reserve","Defend the food from unauthorized people","Livgardet");
         Task task3 = new Task("Medivac", "Evacuate injured civilians from central Stockholm", "Skyttebataljonen");
         Task task4 = new Task("Standard operation", "Defend The Royal Palace", "Livbataljonen");
         Task task5 = new Task("Defend Musköbasen", "Defend Musköbasen from beeing ocupied", "Amfibiebataljonen");
@@ -312,8 +312,8 @@ public boolean isAMissionChosen(){
        task.setStartTime(c);
        task.setEndTime(c2);
        
-       task2.setStartTime(c);
-       task2.setEndTime(c2);
+     /*  task2.setStartTime(c);
+       task2.setEndTime(c2);*/
        
        task3.setStartTime(c);
        task3.setEndTime(c2);
@@ -384,8 +384,8 @@ public boolean isAMissionChosen(){
         
         ////////////////////////////////////////////////////////////////////////
        
-        task.setListOfNodesErros(one);   
-        task2.setListOfNodesErros(six);        
+      /*  task.setListOfNodesErros(one);   
+        task2.setListOfNodesErros(six); */       
         
         task3.setListOfNodesErros(five);
         task3.setListOfNodesErros(six);
@@ -411,12 +411,12 @@ public boolean isAMissionChosen(){
         
         
         task.setNoder(temp);
-        task2.setNoder(temp);
+      //  task2.setNoder(temp);
         task3.setNoder(temp);
         task4.setNoder(temp);
         task5.setNoder(temp);
         Tasks.add(task);
-        Tasks.add(task2);
+      //  Tasks.add(task2);
         Tasks.add(task3);
         Tasks.add(task4);
         Tasks.add(task5);

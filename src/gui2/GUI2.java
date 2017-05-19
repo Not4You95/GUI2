@@ -100,7 +100,7 @@ public class GUI2 extends Application {
     
     @Override   
     
-    public void start(Stage primaryStage) {
+  public void start(Stage primaryStage) {
        
         Contolloer = new guiControler(this);        
         root = new BorderPane();
@@ -140,9 +140,7 @@ public class GUI2 extends Application {
         System.out.println("Menulist: " +DatePicer.getWidth());
         System.out.println("Interface: "+Interface);
     
-    }
-    
-   
+    }      
     
   public void SetTabsForLiveMode(){
         tabPane.getTabs().clear();
@@ -456,7 +454,7 @@ public class GUI2 extends Application {
         
         DatePicer.addEventHandler(ActionEvent.ACTION, new ChoiseOfDate());
         //tree.getSelectionModel().selectedItemProperty().addListener((v,oldvalue,newvalue) -> {Contolloer.newTabInterface(newvalue);});
-        Label label = new Label("Date of mision");
+        Label label = new Label("Date of mission");
         TopLine.getChildren().addAll(label,DatePicer,menulist,SimulateButton);
        
         
@@ -532,7 +530,7 @@ public class GUI2 extends Application {
       
       // Colum 1 Mission
       TableColumn misionColumn = new TableColumn("Mission");
-        misionColumn.setMaxWidth(100);
+        misionColumn.setMaxWidth(200);
         misionColumn.setCellValueFactory(
             new PropertyValueFactory<Task, String>("Name")); 
            
@@ -583,7 +581,7 @@ public class GUI2 extends Application {
        
         //Colum 4 Error for 
         TableColumn NodeErros = new TableColumn("Nodes with Error");
-        NodeErros.setMinWidth(200);
+        NodeErros.setMinWidth(150);
         NodeErros.setCellValueFactory(new PropertyValueFactory<Task,String>("ErrorNodeName"));
         NodeErros.setCellFactory(new Callback<TableColumn<Task,String>,TableCell<Task,String>>() {
            @Override
@@ -787,6 +785,7 @@ public class GUI2 extends Application {
       textnode1P2P.setPromptText("Node 1");
       new Auto(Nodes, textnode1P2P);  
       textnode1P2P.setFocusTraversable(true);
+     
          
       
       // Search window for node 2
