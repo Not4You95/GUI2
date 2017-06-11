@@ -328,7 +328,7 @@ public class GUI2 extends Application {
         
         ListOfInterfaceArea = new ArrayList<>();        
         makeTreeAreaInterface(root);
-        new getMuseCordinates(this.root);
+       
       
         for (int i = 0; i < noder.size(); i++) {
             makeTreeInterfaceSubArea(noder.get(i));
@@ -375,7 +375,7 @@ public class GUI2 extends Application {
         
         ListOfNodesArea = new ArrayList<>();
         makeTreeAreaNode(root);
-       new getMuseCordinates(this.root);
+       
        for (int i = 0; i < noder.size(); i++) {
            makeTreeNodeSubArea(noder.get(i));
          }
@@ -383,7 +383,7 @@ public class GUI2 extends Application {
         TreeView tree = new TreeView<>(root);
         tree.setShowRoot(false);
         tree.getSelectionModel().selectedItemProperty().addListener((v,oldvalue,newvalue) -> {Contolloer.newTabNode(newvalue);}); 
-        new getMuseCordinates(tree);
+       
         
         HBox box = new HBox();
         box.setSpacing(10);
@@ -452,7 +452,7 @@ public class GUI2 extends Application {
         dateFormatter = DateTimeFormatter.ofPattern(pattern);
         DatePicer = new DatePicker(DateToPresent);
         DatePicer.setShowWeekNumbers(true);
-        new getMuseCordinates(DatePicer);
+     
         
         Button SimulateButton = new Button("Simulate");
         //"-fx-base: #ccccb3"
@@ -526,7 +526,7 @@ public class GUI2 extends Application {
       
       TableView<Task> table = new TableView();
       table.setEditable(true);
-      new getMuseCordinates(table);
+    
       //
       TableColumn checkBox = new TableColumn("Select");
       checkBox.setMaxWidth(50);
@@ -660,7 +660,7 @@ public class GUI2 extends Application {
                            MenuBar mb = new MenuBar(m0);
                            mb.setStyle(getTableRow().getStyle());
                            mb.setMaxWidth(90);
-                           new getMuseCordinates(mb);
+                          
                            
                            
                            setGraphic(mb);
@@ -707,7 +707,7 @@ public class GUI2 extends Application {
       topLineForPlanmode();
       SetColor();
       State = "Plan";
-      new getMuseCordinates(tabPane);
+     
       //
        
 
@@ -721,7 +721,7 @@ public class GUI2 extends Application {
       
         // Tabels
       TableView<Task> table = new TableView<>();     
-      new getMuseCordinates(table);
+     
       
       table.setEditable(true);
  
@@ -813,13 +813,13 @@ public class GUI2 extends Application {
       Label nod1 = new Label("Node 1");
       Label nod2 = new Label("Node 2");
       Label comType = new Label("Com type");
-      new getMuseCordinates(pnet);
+    
       // text.setMouseTransparent(true);
       // text.setFocusTraversable(false);
       ///Search window for node 1
      final TextField textnode1P2P = new TextField();
       textnode1P2P.setPromptText("Node 1");
-      new getMuseCordinates(textnode1P2P);
+     
       new Auto(Nodes, textnode1P2P);  
       textnode1P2P.setFocusTraversable(true);
      
@@ -828,7 +828,7 @@ public class GUI2 extends Application {
       // Search window for node 2
     final TextField textnode2P2P = new TextField();      
       textnode2P2P.setPromptText("Node 2");
-      new getMuseCordinates(textnode2P2P);
+    
       new Auto(Nodes, textnode2P2P);
       textnode2P2P.setFocusTraversable(false);
       textnode2P2P.setMouseTransparent(true);
@@ -844,7 +844,7 @@ public class GUI2 extends Application {
       // Search window for com type
       TextField textComTypeP2P = new TextField();
       textComTypeP2P.setPromptText("Comunication type");
-      new getMuseCordinates(textComTypeP2P);
+     
       new Auto(inters, textComTypeP2P);
       textComTypeP2P.setFocusTraversable(false);
       textComTypeP2P.setMouseTransparent(true);
@@ -861,13 +861,13 @@ public class GUI2 extends Application {
      final ComboBox<String> priBox = new ComboBox<>(levels);
      priBox.setPromptText("Priority");
      priBox.setMouseTransparent(true);
-     new getMuseCordinates(priBox);
+    
     
      // Combobox for quality
     final ComboBox<String> QualbBox = new ComboBox<>(levels);
       QualbBox.setPromptText("Quality");
       QualbBox.setMouseTransparent(true);
-      new getMuseCordinates(QualbBox);
+      
       
       textComTypeP2P.setOnAction(new EventHandler<ActionEvent>() {
           @Override
@@ -887,11 +887,7 @@ public class GUI2 extends Application {
       // Ok button 
       okButton = new Button("Ok");      
       okButton.localToScene(okButton.getBoundsInLocal());
-      new getMuseCordinates(okButton);
-    
-      
-      
-      
+     
        okButton.setOnAction(new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent event) {

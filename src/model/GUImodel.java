@@ -35,7 +35,10 @@ public class GUImodel {
     
     
     
-    
+    /**
+     * Constructor 
+     * @param input 
+     */
     public GUImodel(guiControler input){
         Org = new ArrayList<Orginasation>();
         Tasks = new ArrayList<Task>();
@@ -43,12 +46,19 @@ public class GUImodel {
        
         filename = new File("test.txt");       
     }
-      
+      /**
+       * Saves the desired day to filter out missions
+       * @param date 
+       */
     public void setDayOfMission(LocalDate date){
      dayOfMission = date;        //
         
     }
-public boolean isAMissionChosen(){
+    /**
+     * Verifies if a mission has be select 
+     * @return 
+     */
+    public boolean isAMissionChosen(){
     if (taskTemp != null) {
         return true;
     }
@@ -57,7 +67,10 @@ public boolean isAMissionChosen(){
         return false;
     }
 }
-    
+    /**
+     * Returns the names of the missions
+     * @return 
+     */
     public ArrayList<String> GetTaskNames(){
         ArrayList<String> temp = new ArrayList<String>();
         for (int i = 0; i < Tasks.size(); i++) {
@@ -67,7 +80,10 @@ public boolean isAMissionChosen(){
         
         return temp;
     }
-    
+    /**
+     * Returns a list of missions that is performed at the desired date
+     * @return 
+     */
     public ObservableList<Task> getTaskList(){
         ObservableList<Task> temp = FXCollections.observableArrayList();
         for (int i = 0; i < Tasks.size(); i++) {            
@@ -78,11 +94,17 @@ public boolean isAMissionChosen(){
         return temp;
         
     }
-    
+    /**
+     * Saves a copy of the selected mission
+     * @param task 
+     */
     public void SetTempTask(int task){
         taskTemp = Tasks.get(task);
     }
-    
+    /**
+     * Saves a copy of the selected mission
+     * @param name 
+     */
     public void SetTempTask(String name){
         for (int i = 0; i < Tasks.size(); i++) {
             System.out.println("TempTask: "+Tasks.get(i).getName().toLowerCase().contains(name.toLowerCase()));
@@ -92,7 +114,10 @@ public boolean isAMissionChosen(){
             
         }
     }
-    
+    /**
+     * Saves a copy of the selected mission
+     * @param obejct 
+     */
     public void settempTask(Task obejct){
         for (int i = 0; i < Tasks.size(); i++) {
            if (obejct.getName().toLowerCase().contains(Tasks.get(i).getName().toLowerCase())) {
@@ -101,15 +126,11 @@ public boolean isAMissionChosen(){
         } 
         }
     }
-    
-    public Calendar getStarDate(){
-        return taskTemp.getStartTime();
-    }
-    
-    public Calendar getEndDate(){
-        return taskTemp.getEndTime();
-    }       
-   
+       
+   /**
+    * Returns a copy of the selected mission
+    * @return 
+    */
     public Task getTask(){
         if (taskTemp != null) {
             return taskTemp;
@@ -118,31 +139,19 @@ public boolean isAMissionChosen(){
             return null;
         }
     }
-    
-    public String GetOrgInfo(){
-        String temp=null;
-       for (int i = 0; i < Org.size(); i++) {
-            if (Org.get(i).getName() == OrgName) {
-                temp = Org.get(i).getInfo();
-                              
-            } 
-        }
-       return temp;
-    }
-    
-    public int GetOrgPriorityForAll(){           
-     return taskTemp.getRank();
-       
-    }
-    
-   
-    
+     /**
+      * Returns a list of nodes that belongs to a mission
+      * 
+      */   
     public ArrayList<TSN> getNodes(){
         ArrayList<TSN> temp  = new ArrayList<>();
         temp.addAll(taskTemp.getNoder());
         return temp;
     }
-    
+    /**
+     * Returns a list of nodes of type string that belongs to a mission
+     * @return 
+     */
     public ArrayList<String> getNodesOfTypeString(){
         ArrayList<String> temp = new ArrayList<>();
         if (taskTemp != null) {
@@ -155,7 +164,11 @@ public boolean isAMissionChosen(){
         }
         return temp;
     }
-    
+    /**
+     * Returns the node that has the same input name
+     * @param name
+     * @return 
+     */
     public TSN getNode(String name){
         if (taskTemp != null) {
             for (int i = 0; i < taskTemp.getNoder().size(); i++) {               
@@ -169,7 +182,11 @@ public boolean isAMissionChosen(){
         }
         return null;
     }
-    
+    /**
+     * Returns the Communication type that has the same input name
+     * @param name
+     * @return 
+     */
     public Interface getInterface(String name){
         if(taskTemp != null){            
              ArrayList<Interface> Itemp = new ArrayList<>();
@@ -188,7 +205,10 @@ public boolean isAMissionChosen(){
         }
         return null;
 }
-    
+    /**
+     * Returns a list of Communication types that is used in the mission
+     * @return 
+     */
     public ArrayList<Interface> getInterfacesTypes(){
          ArrayList<Interface> temp = new ArrayList<>();
         ArrayList<Interface> Itemp = new ArrayList<>();
@@ -208,7 +228,10 @@ public boolean isAMissionChosen(){
         }
         return temp;
     }          
-
+/**
+ * Returns a list of Communication types that is used in the mission by string
+ * @return 
+ */
     public ArrayList<String> getInterfacesOfTypeStrings(){
         ArrayList<String> temp = new ArrayList<>();
         ArrayList<Interface> Itemp = new ArrayList<>();
@@ -227,7 +250,10 @@ public boolean isAMissionChosen(){
         }
         return temp;
     }
-    
+    /**
+     * Update the Communication type
+     * @param temp 
+     */
     public void newInterface(Interface temp){
         for (int i = 0; i < Tasks.size(); i++) {
             if (Tasks.get(i).getName().toLowerCase().contains(taskTemp.getName().toLowerCase())) {
@@ -240,7 +266,10 @@ public boolean isAMissionChosen(){
         
         settempTask(taskTemp);
     }
-    
+    /**
+     * update node
+     * @param temp 
+     */
     public void newNode(TSN temp){
         for (int i = 0; i < Tasks.size(); i++) {
             if (Tasks.get(i).getName().toLowerCase().contains(taskTemp.getName().toLowerCase())) {               
@@ -249,10 +278,9 @@ public boolean isAMissionChosen(){
         }
         settempTask(taskTemp);
     }
-    
-    
-    
-    
+    /**
+     * Creates a test of missions and nodes and communication types 
+     */
       public void test() {
           ArrayList<TSN> temp = new ArrayList<TSN>();
         ArrayList<Orginasation> orgList = new ArrayList<Orginasation>();
