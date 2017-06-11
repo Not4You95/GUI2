@@ -79,7 +79,6 @@ public class GUI2 extends Application {
     
    private BorderPane root;
    private String State="";
-   private GridPane  border;
    private Button okButton,BackButton;   
    private MenuItem P_2_P_MenuItem;
    private guiControler Contolloer;
@@ -94,8 +93,8 @@ public class GUI2 extends Application {
    private ArrayList<TreeItem> ListOfInterfaceArea,ListOfNodesArea;
    private DatePicker DatePicer;
    private final String pattern = "yyyy-mm-dd";
-   private DateTimeFormatter dateFormatter;
    private LocalDate DateToPresent;  
+   private DateTimeFormatter dateFormatter;
    
     
     @Override   
@@ -104,8 +103,7 @@ public class GUI2 extends Application {
        
         Contolloer = new guiControler(this);        
         root = new BorderPane();
-        tabPane = new TabPane();
-        border = new GridPane();
+        tabPane = new TabPane();        
         TopLine = new HBox(20);       
         ToplineVBox = new VBox();
         Contolloer.setScreen();        
@@ -126,22 +124,17 @@ public class GUI2 extends Application {
         
         Scene scene = new Scene(root, 700, 320);
         
-       new getMuseCordinates(root);
-       new getMuseCordinates(menulist);
+      
         primaryStage.setTitle("GUI");
         primaryStage.setScene(scene);
         primaryStage.show();
         
-        //
-        double height = scene.getHeight()/2;
-        double with = scene.getWidth()/2;
-        Bounds Inscreen = DatePicer.localToScene(DatePicer.getBoundsInLocal());
-        System.out.println("Start Center point: Height: "+height+" With: "+with);
-        System.out.println("Menulist: " +DatePicer.getWidth());
-        System.out.println("Interface: "+Interface);
+      
     
     }      
-    
+    /**
+     *  Adding the first 3 tabs to the screen: Overview ,Communication type and Nodes
+     */
   public void SetTabsForLiveMode(){
         tabPane.getTabs().clear();
         Overview = new Tab("Overwiew");
@@ -155,7 +148,9 @@ public class GUI2 extends Application {
         
         
    } 
-  
+  /**
+   * Creates the menu list to select live mode or plan mode
+   */
   public void ModeMenu(){
     ModeMenu = new Menu("_Mode");
     Plan = new CheckMenuItem("Plan");
@@ -168,7 +163,9 @@ public class GUI2 extends Application {
     
 
 }   
-
+/**
+ * Creates the menu to select P2P connection
+ */
   public void P_2_PMenu(){
     P_2_P_Menu = new Menu("_P_2_P");
     P_2_P_Menu.addEventHandler(ActionEvent.ACTION, new MenuP_2_PChoice());
@@ -176,14 +173,20 @@ public class GUI2 extends Application {
     P_2_P_MenuItem.addEventHandler(ActionEvent.ACTION, new MenuP_2_PChoice());
     P_2_P_Menu.getItems().add(P_2_P_MenuItem);
 }     
-
+/**
+ * Sets colour to the menu bar and the screen
+ */
   public void SetColor(){
     TopLine.setStyle("-fx-background-color: #ccccb3");   
     menulist.setStyle("-fx-background-color: #ccccb3");
     ToplineVBox.setStyle("-fx-background-color: #ccccb3");
 
 }   
-
+/**
+ * Event handler for selecting date in plan mode, to filer the missions by the date. 
+ * Updating the date window to the selected data and send the new date to the model, 
+ * what will update the list of missions.
+ */
   private class ChoiseOfDate implements EventHandler<ActionEvent>{
 
                @Override
@@ -195,7 +198,10 @@ public class GUI2 extends Application {
             
         }
     } 
-   
+   /**
+    * Event handler when the user hits the back button. 
+    * It will change to the plan mode and call the functions in the controller to update the screen to plan mode.
+    */
   private class BackButton implements EventHandler<ActionEvent>{
 
         @Override
@@ -210,7 +216,10 @@ public class GUI2 extends Application {
             }
         }
     }
-
+/**
+ * Event handler when the user is selection with mode it will work on, plan or live mode.
+ * It will call for function in controller to update the screen for the desired mode.
+ */
   private class ModeMenuChoice implements EventHandler<ActionEvent>{
 
         @Override
@@ -237,21 +246,22 @@ public class GUI2 extends Application {
         @Override
         public void handle(ActionEvent event) {
            
-            if (event.getSource() == P_2_P_MenuItem) {
-                System.out.println("P_2_P\n");
+            if (event.getSource() == P_2_P_MenuItem) {                
                 Contolloer.updateP_2_P();
                 
             }
         }
     }  
-    
-  public void  OverViewSceen(int Rank,String info,Calendar startDate,Calendar endDate, Task temp){
+  /**
+   *     Creates the overview tab scene for missions, and the in parameter is a copy of the mission.
+   * @param mission 
+   */
+  public void  OverViewSceen(Task mission){
         Net = new GridPane();
         CenterHBox = new HBox();
         CentetVBox = new VBox();
-        Label labelText = new Label("Information:");
-        //Text texttest = new Text(info);
-        TextArea text = new TextArea(temp.getInfo());
+        Label labelText = new Label("Information:");       
+        TextArea text = new TextArea(mission.getInfo());
         text.setMaxWidth(150);
         text.setPrefColumnCount(10);
         text.setWrapText(true);
@@ -259,25 +269,22 @@ public class GUI2 extends Application {
         text.setMouseTransparent(true);
         text.setFocusTraversable(false);
         
-        ////////////////////////////////////////////////////////////////
-        System.out.println("This mision has priority: "+temp.getRank());
-        //System.out.println("of: "+TotalRank);
+       
         
         ////////////////////////////////////////////////////////////////
         
-        Label globalPriotet = new Label("This mision has priority: "+temp.getRank());
-        Label startDayLabel = new Label("The mission begins at: "+temp.getStartTime().getTime());
-        Label endDateLabel = new Label("The mission ends at: "+temp.getEndTime().getTime());
-       // Label globalQuality = new Label("of "+TotalRank);
+        Label globalPriotet = new Label("This mision has priority: "+mission.getRank());
+        Label startDayLabel = new Label("The mission begins at: "+mission.getStartTime().getTime());
+        Label endDateLabel = new Label("The mission ends at: "+mission.getEndTime().getTime());
+       
+       
         Net.setVgap(20);
         Net.setHgap(20);
         Net.setAlignment(Pos.TOP_CENTER);
         CentetVBox.setAlignment(Pos.TOP_CENTER);
         Net.add(globalPriotet,0,2);
-        //Net.add(globalQuality, 0, 3);
-        
-        //Label temp1 = new Label(GlobalPriorityIput.toString());
-       // Label temp2 = new Label(GlobalQualityInput.toString());
+             
+       
         Net.add(startDayLabel, 0, 3);
         Net.add(endDateLabel, 0, 4);
         CentetVBox.getChildren().addAll(labelText,text);
@@ -287,13 +294,17 @@ public class GUI2 extends Application {
         Overview.setContent(CenterHBox);
         
     }
-  
+  /**
+   * Creates the tab to search or select communications types that is used in the mission. It also creates the tree of communications types
+   * @param noder 
+   */
   public void InterfaceScreen(ArrayList<Interface> noder){      
        
         TreeItem<String> root;        
         root = new TreeItem<>();
         root.setExpanded(true);
         BorderPane pane = new BorderPane();
+      
        ArrayList<String> temp = new ArrayList<>();
        
        for (int i = 0; i < noder.size(); i++) {
@@ -317,6 +328,7 @@ public class GUI2 extends Application {
         
         ListOfInterfaceArea = new ArrayList<>();        
         makeTreeAreaInterface(root);
+        new getMuseCordinates(this.root);
       
         for (int i = 0; i < noder.size(); i++) {
             makeTreeInterfaceSubArea(noder.get(i));
@@ -331,7 +343,10 @@ public class GUI2 extends Application {
         pane.setCenter(tree);
     Interface.setContent(pane);
 }
-  
+/**
+ * Creates the tab to search or select nodes that are in the mission. It creates a tree view and a search function.  
+ * @param noder 
+ */  
   public void NodeTabScreen(ArrayList<TSN> noder){
      
         TreeItem<String> root;
@@ -360,7 +375,7 @@ public class GUI2 extends Application {
         
         ListOfNodesArea = new ArrayList<>();
         makeTreeAreaNode(root);
-       
+       new getMuseCordinates(this.root);
        for (int i = 0; i < noder.size(); i++) {
            makeTreeNodeSubArea(noder.get(i));
          }
@@ -368,6 +383,7 @@ public class GUI2 extends Application {
         TreeView tree = new TreeView<>(root);
         tree.setShowRoot(false);
         tree.getSelectionModel().selectedItemProperty().addListener((v,oldvalue,newvalue) -> {Contolloer.newTabNode(newvalue);}); 
+        new getMuseCordinates(tree);
         
         HBox box = new HBox();
         box.setSpacing(10);
@@ -377,14 +393,10 @@ public class GUI2 extends Application {
        pane.setCenter(tree);
     Nodes.setContent(pane);
 }
-
-  public TreeItem<String> makeBrach(String titel,TreeItem<String> parent){
-        TreeItem<String> item = new TreeItem<>(titel);
-        item.setExpanded(true);        
-        parent.getChildren().add(item);
-        return item;
-    }
-  
+/**
+ * Creates the different area in the tree view for the communication types tab
+ * @param parentItem 
+ */
   public void makeTreeAreaInterface(TreeItem<String> parentItem){
       for (int i = 1; i < InterfaceTypes.values().length+1; i++) {
           TreeItem<String> item = new TreeItem(InterfaceTypes.getTypes(i).toString());
@@ -393,16 +405,22 @@ public class GUI2 extends Application {
           ListOfInterfaceArea.add(item);
       }
   }
-  
+  /**
+   * Creates the different area in the tree view for the node tab
+   * @param parentItem 
+   */
   public void makeTreeAreaNode(TreeItem<String> parentItem){
       for (int i = 1; i < TSNTypes.values().length+1; i++) {
           TreeItem<String> item = new TreeItem(TSNTypes.getTypes(i).toString());
-          item.setExpanded(true);
+          item.setExpanded(true);          
           parentItem.getChildren().add(item);
           ListOfNodesArea.add(item);
       }
   }  
-  
+  /**
+   * Creates the nodes that belongs to a desired area in the tree view in the tab for nodes 
+   * @param node 
+   */
   public void makeTreeNodeSubArea(TSN node){
       TreeItem<String> item = new TreeItem<>(node.getName());
       for (int i = 0; i <ListOfNodesArea.size(); i++) {          
@@ -411,7 +429,10 @@ public class GUI2 extends Application {
           }
       }
   }
-  
+  /**
+   * Creates the communications types that belongs to desired area in the tree view in the tab for communication types. 
+   * @param node 
+   */
   public void makeTreeInterfaceSubArea(Interface node){
       TreeItem<String> item = new TreeItem<>(node.getName());
       for (int i = 0; i <ListOfInterfaceArea.size(); i++) {          
@@ -420,7 +441,9 @@ public class GUI2 extends Application {
           }
       }
   }
-  
+  /**
+   * Creates the top line for the planning mode. 
+   */
   public void topLineForPlanmode(){
      
      
@@ -449,7 +472,7 @@ public class GUI2 extends Application {
        
         
         DatePicer.setPromptText(pattern.toLowerCase());
-        System.out.println("Time: "+DatePicer.getValue());
+       
         
         
         DatePicer.addEventHandler(ActionEvent.ACTION, new ChoiseOfDate());
@@ -463,7 +486,9 @@ public class GUI2 extends Application {
         DatePicer.requestFocus();
         
   }
-  
+  /**
+   * Creates the top line for the for edit the missions
+   */
   public void topLineforEdeting(){
        
         menulist.getMenus().add(P_2_P_Menu);
@@ -481,7 +506,11 @@ public class GUI2 extends Application {
        
        root.setTop(ToplineVBox);
   }
-  
+  /**
+   * Creates the scene to present the missions for the live and simulation mode  
+   * @param Tasks
+   * @param Simultate 
+   */
   public void SetScreenForLiveAndSimulateMode(ObservableList<Task> Tasks,boolean Simultate){
       menulist.getMenus().remove(P_2_P_Menu);
       if (!Simultate) menulist.getMenus().add(P_2_P_Menu);
@@ -497,7 +526,7 @@ public class GUI2 extends Application {
       
       TableView<Task> table = new TableView();
       table.setEditable(true);
-      
+      new getMuseCordinates(table);
       //
       TableColumn checkBox = new TableColumn("Select");
       checkBox.setMaxWidth(50);
@@ -611,14 +640,16 @@ public class GUI2 extends Application {
                                    MenuItem tempc = new MenuItem(temp2.get(i).getListOfInterfasErros().get(j).getName());
                                     mTemp.getItems().add(tempc);
                                     final String missionTemp = getTableView().getItems().get(getTableRow().getIndex()).getName();
-                                    final String nameTemp = temp2.get(i).getListOfInterfasErros().get(j).getName();
+                                    final String nameTemp = temp2.get(i).getListOfInterfasErros().get(j).getName();                                    
+                                    
+                                    
                                     tempc.setOnAction(new EventHandler<ActionEvent>() {
                                        @Override
                                        public void handle(ActionEvent event) {
                                           Contolloer.choiseOfInterfaceLiveMode(nameTemp, missionTemp);
                                        }
                                    });
-                                   // tempc.addEventHandler(ActionEvent.ANY, new OpenInderface(new Object(), "Test"));
+                                   
                                     
                                 
                                 }
@@ -629,8 +660,8 @@ public class GUI2 extends Application {
                            MenuBar mb = new MenuBar(m0);
                            mb.setStyle(getTableRow().getStyle());
                            mb.setMaxWidth(90);
-                           //mb.setStyle(getTableView().getColumns().get(2).getStyle());
-                        
+                           new getMuseCordinates(mb);
+                           
                            
                            setGraphic(mb);
                            Tooltip tip = new Tooltip();
@@ -663,7 +694,10 @@ public class GUI2 extends Application {
       tabPane.getTabs().add(tabLiveMode);
       root.setCenter(tabPane);
   }  
-  
+  /**
+   * Creates the scene to present the missions for the planning mode
+   * @param Tasks 
+   */
   public void screenForPlanMode(ObservableList<Task> Tasks){
       tabPlanScren = new Tab("Missions");
       tabPane.getTabs().clear();
@@ -708,7 +742,6 @@ public class GUI2 extends Application {
         OrgColumn.setMinWidth(200);
         OrgColumn.setCellValueFactory(
             new PropertyValueFactory<Task, String>("orginsastion"));
-       // OrgColumn.setCellFactory(TextFieldTableCell.forTableColumn());
       
         
        
@@ -743,7 +776,6 @@ public class GUI2 extends Application {
         table.setRowFactory(tv -> {
             TableRow<Task> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
-                System.out.println(event.getPickResult().getIntersectedNode());
                 if(! row.isEmpty() && event.getButton() == MouseButton.PRIMARY && !event.getPickResult().getIntersectedNode().toString().toLowerCase().contains("ComboBoxTableCell".toLowerCase())){
                    Task clikrow = row.getItem();
                     Contolloer.ChoiseOfTaskPlanMode(clikrow);
@@ -763,7 +795,11 @@ public class GUI2 extends Application {
       
       
   }
-
+/**
+ * Creates the scene to make a point to point connection. The user is searching for nodes and communication type and selects the priority and quality in qombobox 
+ * @param Nodes
+ * @param inters 
+ */
   public void P_2_PScreen(ArrayList<String> Nodes,ArrayList<String> inters){    
      
       ObservableList<String> levels = FXCollections.observableArrayList();
@@ -777,12 +813,13 @@ public class GUI2 extends Application {
       Label nod1 = new Label("Node 1");
       Label nod2 = new Label("Node 2");
       Label comType = new Label("Com type");
-      
+      new getMuseCordinates(pnet);
       // text.setMouseTransparent(true);
       // text.setFocusTraversable(false);
       ///Search window for node 1
      final TextField textnode1P2P = new TextField();
       textnode1P2P.setPromptText("Node 1");
+      new getMuseCordinates(textnode1P2P);
       new Auto(Nodes, textnode1P2P);  
       textnode1P2P.setFocusTraversable(true);
      
@@ -791,6 +828,7 @@ public class GUI2 extends Application {
       // Search window for node 2
     final TextField textnode2P2P = new TextField();      
       textnode2P2P.setPromptText("Node 2");
+      new getMuseCordinates(textnode2P2P);
       new Auto(Nodes, textnode2P2P);
       textnode2P2P.setFocusTraversable(false);
       textnode2P2P.setMouseTransparent(true);
@@ -806,6 +844,7 @@ public class GUI2 extends Application {
       // Search window for com type
       TextField textComTypeP2P = new TextField();
       textComTypeP2P.setPromptText("Comunication type");
+      new getMuseCordinates(textComTypeP2P);
       new Auto(inters, textComTypeP2P);
       textComTypeP2P.setFocusTraversable(false);
       textComTypeP2P.setMouseTransparent(true);
@@ -822,11 +861,13 @@ public class GUI2 extends Application {
      final ComboBox<String> priBox = new ComboBox<>(levels);
      priBox.setPromptText("Priority");
      priBox.setMouseTransparent(true);
+     new getMuseCordinates(priBox);
     
      // Combobox for quality
     final ComboBox<String> QualbBox = new ComboBox<>(levels);
       QualbBox.setPromptText("Quality");
       QualbBox.setMouseTransparent(true);
+      new getMuseCordinates(QualbBox);
       
       textComTypeP2P.setOnAction(new EventHandler<ActionEvent>() {
           @Override
@@ -844,9 +885,9 @@ public class GUI2 extends Application {
        
        
       // Ok button 
-      okButton = new Button("Ok");
-      double test = textnode1P2P.getWidth()-10;
+      okButton = new Button("Ok");      
       okButton.localToScene(okButton.getBoundsInLocal());
+      new getMuseCordinates(okButton);
     
       
       
@@ -903,7 +944,11 @@ public class GUI2 extends Application {
       tabPane.getTabs().add(tabP_2_P);
       
   }    
-  
+  /**
+   * Creates the scene to edit the  of properties of the node or the communication type 
+   * @param temp
+   * @param itemp 
+   */
   public void nodeAndComtypeTab(TSN temp,Interface itemp){
       
       String name = null,info = null,priority = null,quality = null;
@@ -914,7 +959,6 @@ public class GUI2 extends Application {
           info = temp.getInfo();
           priority = temp.getPriority().toString();
           quality = temp.getQuality().toString();
-          System.out.println("Image: "+temp.getImage());
           image = temp.getImage();
       }
       else if(itemp != null){
@@ -922,8 +966,6 @@ public class GUI2 extends Application {
           info = itemp.getInfo();         
           priority = itemp.getPriority().toString();
           quality = itemp.getQuality().toString();                      
-          System.out.println("Image: "+itemp.getImage().toString());
-          System.out.println("Name: "+itemp.getName());
           image = itemp.getImage();
       }
       
@@ -1003,8 +1045,7 @@ public class GUI2 extends Application {
       
      
       
-      //Image
-      LeftPane.add(imageView, 1, 1);
+     
       
       //TextArea
       LeftPane.add(infoLabel, 1, 2);
@@ -1013,10 +1054,12 @@ public class GUI2 extends Application {
       //ChoiceBox
       CenterPane.add(PriLabel, 2, 2);
       CenterPane.add(PriBox, 3, 2);
-      if (itemp != null) {
+   //   if (itemp != null) {
       CenterPane.add(QuaLabel, 2, 3);
       CenterPane.add(QulBox, 3, 3);
-      }
+       //Image
+      LeftPane.add(imageView, 1, 1);
+    //  }
      
       
       //ok button
@@ -1027,7 +1070,12 @@ public class GUI2 extends Application {
               
       tabPane.getTabs().add(tab);
   }    
-    
+  /**
+   * Alert function to the user
+   * @param info
+   * @param head
+   * @param titel 
+   */  
   public void AlertToUser(String info, String head, String titel){
       Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setHeaderText(head);

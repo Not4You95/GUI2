@@ -354,7 +354,7 @@ public boolean isAMissionChosen(){
         five.addInterfaceArray(all);
         five.setType(TSNTypes.Hospital);
         five.setImage(Hospital);
-        five.setInfo("MEDICAL TREATMENT FACILITY");
+        five.setInfo("M"+"EDICAL TREATMENT FACILITY".toLowerCase());
         
         TSN six = new TSN("BMS/Soldier");
         six.addInterfaceArray(all);

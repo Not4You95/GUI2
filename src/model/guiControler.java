@@ -12,7 +12,7 @@ import javafx.scene.control.TreeItem;
 import model.*;
 
 /**
- *
+ *  
  * @author jonas
  */
 public class guiControler {
@@ -22,7 +22,10 @@ public class guiControler {
     private ArrayList<String> NodesAndComType;
     private boolean Plan=true,Live=false,Simulate=false;
     
-    
+    /**
+     * Constructor
+     * @param GUICLASS 
+     */
     public guiControler(GUI2 GUICLASS){
         gui = GUICLASS; 
         model = new GUImodel(this);
@@ -34,24 +37,34 @@ public class guiControler {
     }
     
    
-    
+    /**
+     * Gets the selected date from gui and forward it to the model and call function to update the screen for plan mode.
+     * @param date 
+     */
     public void SetDate(LocalDate date){
-        System.out.println("Contoler: "+date.toString());
         model.setDayOfMission(date);
         setScreenForPlanMode();
     }
-    
+    /**
+     * Gets a int value from the gui and  forwards it to the model to select the desierd mission
+     * @param DesierdTask 
+     */
     public void setDesierdTask(int DesierdTask){
         if (DesierdTask >=0) {             
              model.SetTempTask(DesierdTask);
             upDateTabs();
         }
     }
-    
+    /**
+     * Gets a string value from the gui and  forwards it to the model to select the desierd mission
+     * @param name 
+     */
     public void setDesierdTask(String name){
         model.SetTempTask(name);
     }
-    
+    /**
+     * Updating the tabs in the gui
+     */
     public void upDateTabs(){
         gui.SetTabsForLiveMode();
         gui.topLineforEdeting();
@@ -59,38 +72,50 @@ public class guiControler {
              upDateNode();
              Overview(); 
     }
-    
-   
-    
+     /**
+      * Gets a copy of the selected mission and forwards it to the gui
+      */
     public void Overview(){
-        gui.OverViewSceen(model.GetOrgPriorityForAll(),model.GetOrgInfo(),model.getStarDate(),model.getEndDate(),model.getTask());
+        gui.OverViewSceen(model.getTask());
        
     }
-    
+    /**
+     * Set the sreen
+     */
     public void setScreen(){     
         gui.P_2_PMenu();     
         tempTask.clear();
         gui.ModeMenu();
        
     }
+    /**
+     * Sets the screen for live mode
+     */
     public void setScreenLiveMode(){
         
          gui.P_2_PMenu();       
          tempTask.clear();
          gui.ModeMenu();      
     }
-    
+    /**
+     * Sets the screen for plan mode
+     */
     public void setScreenForPlanMode(){        
          gui.screenForPlanMode(model.getTaskList());
       
     }
-    
+    /**
+     * Gets the object from the plan mode, and sends it to the model
+     * @param object 
+     */
     public void ChoiseOfTaskPlanMode(Task object){
         model.settempTask(object);       
         upDateTabs();
      
     }
-    
+    /**
+     * Updating the screen
+     */
     public void UppdateScreen(){       
     
         if (Plan) {
@@ -119,7 +144,9 @@ public class guiControler {
         
        
     }
-    
+    /**
+     * Make a point to point conection in the live mode
+     */
     public void updateP_2_P(){
          if (model.isAMissionChosen()) {
              gui.P_2_PScreen(model.getNodesOfTypeString(),model.getInterfacesOfTypeStrings());
@@ -128,44 +155,67 @@ public class guiControler {
              setWaringForUser("Select mission", "Can not find desierd mission", "Warrning");
          }
       } 
-    
+    /**
+     * Creates a waring to the user from the model
+     * @param info
+     * @param head
+     * @param titel 
+     */
     public void setWaringForUser(String info, String head, String titel){
         gui.AlertToUser(info, head, titel);
     }
     
-    
+    /**
+     * Gets the selected comunication type from the gui, and opens a tab for the selected object
+     * @param intName
+     * @param Mission 
+     */
     public void choiseOfInterfaceLiveMode(Object intName,String Mission){
         model.SetTempTask(Mission);
         newTabInterface(intName);
     }
-    
+    /**
+     * Gets the selected node, and opens the selected node
+     * @param nodeName
+     * @param Mission 
+     */
     public void choiseOfNodeLiveMode(Object nodeName,String Mission){
         model.SetTempTask(Mission);
         newTabNode(nodeName);
     }
-    
+    /**
+     * Opens a new tab in gui for a comuncation type
+     * @param node 
+     */
     public void newTabInterface(Object node){
-        Interface temp  = model.getInterface(node.toString());
-        System.out.println("node: "+node.toString());
-        System.out.println("test: "+temp);
-        if (temp != null) {
-            System.out.println("test: "+temp.getName());
+        Interface temp  = model.getInterface(node.toString());        
+        if (temp != null) {            
             gui.nodeAndComtypeTab(null, temp);
         }
     }    
     
-    
+    /**
+     * Opens a new tab for a node
+     * @param node 
+     */
     public void newTabNode(Object node){        
         TSN temp = model.getNode(node.toString());
         if (temp != null) {
             gui.nodeAndComtypeTab(temp,null);
         }
     }
-    
+    /**
+     *    Updates whish state it is in 
+     */
     public void modeState(){
         modeState(Plan, Live, Simulate);
     }
-    
+    /**
+     * Updates whish state it is in 
+     * @param Plan
+     * @param Live
+     * @param Simulate 
+     */
    public void modeState(boolean Plan,boolean Live,boolean Simulate){
           this.Plan = Plan;
           this.Live = Live;
@@ -173,27 +223,35 @@ public class guiControler {
           UppdateScreen();
           gui.upDateModeState(Plan, Live, Simulate);
       }
+   /**
+    * Gets the nodes in the selected mission and send it to the gui
+    */
    public void upDateNode(){
        
        gui.NodeTabScreen(model.getNodes());
    }
+   /**
+    * Gets the Communication type in the selected mission and send it to the gui
+    */
       public void upDateInterface(){
          
           gui.InterfaceScreen(model.getInterfacesTypes());
       }
       
      public void setNodesAndComTypeForP_2_P(String Node1,String Node2,String Com_type,String priority,String Quality){
-         System.out.println("Node 1: "+Node1);
-         System.out.println("Node 2: "+Node2);
-         System.out.println("Com type: "+Com_type);
-         System.out.println("Priority: "+priority);
-         System.out.println("Quality: "+Quality);
+         
      }
-     
+     /**
+      * Transfers a communication type to the model
+      * @param temp 
+      */
      public void newInterface(Interface temp){
          model.newInterface(temp);
      }
-     
+     /**
+      * Transfers a node to the model
+      * @param temp 
+      */
      public void newNode(TSN temp){
          model.newNode(temp);
      }
